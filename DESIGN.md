@@ -186,6 +186,18 @@ against the substrate each sits on:
 | Resultant | 6.9:1 | 5.4:1 |
 | Vector C | 9.0:1 | 4.8:1 |
 
+The paper substrate itself has a dark variant, and its values are taken verbatim from the lesson
+page rather than invented, so the two pages are one object in either theme: paper becomes
+`#0A0F19`, panel `#121A28`, ink `#E9EFF8`, and the four roles lift to `#6BAAFF`, `#FFB020`,
+`#FF72B3`, `#35D3C4`. The instrument, the footer and the film-card headers are dark in both
+themes and do not participate — which is why the handoff gradient still lands on {colors.ground}
+and still reads.
+
+One consequence has to be handled explicitly. The filled call to action always sits on the
+instrument, so it must not follow the themed resultant: in dark mode that becomes `#FF72B3` and
+white text on it measures 2.5:1. The button is therefore pinned to the light resultant
+{colors.vec-r} in every theme, where white text measures 5.9:1.
+
 All four clear 4.5:1 on the instrument. On paper, **Vector B is the exception at 4.3:1** — it
 clears the 3:1 bar for graphics and large text but misses AA for body copy. So amber on paper is
 restricted to arrows, rules, arrowheads, and numerals set at 1.25rem or larger; it never sets a
@@ -265,6 +277,9 @@ carries everything secondary and is paper with an ink rule.
 - **Don't** autoplay a film with sound, and don't autoplay more than one at a time.
 - **Don't** set body copy in {colors.vec-b} on paper. It measures 4.3:1 and misses AA. Amber on
   paper is for arrows, rules and large numerals only.
+- **Don't** let a filled control on the instrument follow a themed token. The instrument is dark
+  in every theme, so a token that lifts for dark mode will drag a filled button with it and
+  strand its white label at 2.5:1.
 - **Do** keep every number in mono. A figure in serif is a bug.
 - **Do** give the WebGL hero a static first frame that reads on its own, so a machine with no
   WebGL, a locked-down school laptop, or a reader who prefers reduced motion sees a composed
