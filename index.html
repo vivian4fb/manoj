@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vector Analysis — CIE 9702</title>
+<meta name="description" content="Eleven rendered films, eleven worked lessons and a projection deck covering vectors for Cambridge International AS &amp; A Level Physics 9702, sections 1.4 and 4.2.3.">
+<meta name="theme-color" content="#080C16">
+<meta property="og:title" content="Vector Analysis — CIE 9702">
+<meta property="og:description" content="Eleven rendered films, eleven worked lessons and a projection deck covering vectors for CIE 9702, sections 1.4 and 4.2.3.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+
+<style>
+/* ===========================================================================
+   Vector Analysis for 9702 — course home
+   Design system: DESIGN.md in this repository ("Instrument and Paper").
+
+   Two substrates, and the split is the subject: a dark instrument carrying a
+   live vector field above a light exam paper carrying the working. The four
+   vector hues are the films' own, so an amber arrow in a video and an amber
+   arrow on this page are the same quantity.
+=========================================================================== */
+
+:root {
+  /* instrument ---------------------------------------------------------- */
+  --ground:      #080C16;
+  --stage:       #0B1020;
+  --card-d:      #141C2E;
+  --ink-d:       #FFFFFF;
+  --ink-d-2:     #C7D2E4;
+  --ink-d-3:     #8496B4;
+  --line-d:      rgba(255, 255, 255, .10);
+
+  /* paper --------------------------------------------------------------- */
+  --paper:       #F4F6F9;
+  --panel:       #FFFFFF;
+  --ink:         #111925;
+  --ink-2:       #33415A;
+  --muted:       #5C6B80;
+  --rule:        #D2DAE5;
+
+  /* the four vector roles, one pair per role ---------------------------- */
+  --vec-a:       #1F63CE;   --vec-a-d: #4C9AFF;
+  --vec-b:       #A96500;   --vec-b-d: #FFB020;
+  --vec-r:       #C0166B;   --vec-r-d: #FF5CA8;
+  --vec-c:       #0B7A6E;   --vec-c-d: #2EC4B6;
+
+  /* type ---------------------------------------------------------------- */
+  --f-display:   "IBM Plex Sans Condensed", "Segoe UI", system-ui, sans-serif;
+  --f-body:      "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --f-mono:      "IBM Plex Mono", Consolas, ui-monospace, monospace;
+
+  /* spacing scale — nothing between these steps ------------------------- */
+  --s-xs: 6px; --s-sm: 12px; --s-md: 20px; --s-lg: 36px; --s-xl: 64px; --s-xxl: 112px;
+
+  --r-sm: 4px; --r-md: 8px; --r-lg: 14px;
+
+  --measure: 66ch;
+  --content: 1200px;
+  --lift: 0 1px 2px rgba(16, 24, 40, .05), 0 10px 30px rgba(16, 24, 40, .045);
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { font-family: var(--f-display); font-weight: 600; line-height: 1.14; margin: 0; }
+
+a { color: inherit; }
+
+img, svg, video { max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--vec-r);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 99;
+  background: var(--vec-r); color: #fff; padding: 10px 16px;
+  font-family: var(--f-mono); font-size: .8rem;
+}
+.skip:focus { left: 8px; top: 8px; }
+
+/* small caps label — the one mono voice for section marks ----------------- */
+.label {
+  font-family: var(--f-mono);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--s-sm);
+}
+.label.on-dark { color: var(--ink-d-3); }
+
+.wrap {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-inline: max(20px, env(safe-area-inset-left, 0px));
+}
+
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 var(--s-md); color: var(--ink-2); }
+.prose p:last-child { margin-bottom: 0; }
+
+/* every number, unit and answer ------------------------------------------ */
+.num { font-family: var(--f-mono); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* ===========================================================================
+   THE INSTRUMENT
+=========================================================================== */
+
+.instrument {
+  position: relative;
+  isolation: isolate;
+  background: var(--ground);
+  color: var(--ink-d);
+  overflow: hidden;
+  padding-block: clamp(var(--s-xl), 11vh, 120px) var(--s-xxl);
+  padding-top: calc(clamp(var(--s-xl), 11vh, 120px) + env(safe-area-inset-top, 0px));
+  min-height: clamp(560px, 92vh, 920px);
+  display: flex;
+  align-items: center;
+}
+
+/* the WebGL field sits behind everything */
+#field {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: -2;
+  display: block;
+}
+
+/* legibility wash + the one permitted gradient: the handoff to paper.
+   The field is a background and must behave like one: the text column is
+   darkened hard, the right side is left open so the field still reads. */
+.instrument::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(100deg,
+      rgba(8, 12, 22, .95) 0%,
+      rgba(8, 12, 22, .88) 30%,
+      rgba(8, 12, 22, .58) 58%,
+      rgba(8, 12, 22, .40) 100%),
+    linear-gradient(to bottom,
+      rgba(8, 12, 22, .72) 0%,
+      rgba(8, 12, 22, .10) 20%,
+      rgba(8, 12, 22, .10) 64%,
+      var(--ground) 100%);
+  pointer-events: none;
+}
+
+@media (max-width: 880px) {
+  /* stacked, so the wash has to cover the whole column, not just the left */
+  .instrument::after {
+    background:
+      linear-gradient(to bottom,
+        rgba(8, 12, 22, .90) 0%,
+        rgba(8, 12, 22, .80) 45%,
+        rgba(8, 12, 22, .72) 75%,
+        var(--ground) 100%);
+  }
+}
+
+/* when WebGL is unavailable the band still has to read on its own */
+.instrument[data-field="off"] { background: radial-gradient(130% 90% at 76% 30%, #16233d 0%, #0b1120 46%, var(--ground) 100%); }
+.instrument[data-field="off"] #field { display: none; }
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+  gap: clamp(var(--s-lg), 5vw, 88px);
+  align-items: center;
+  width: 100%;
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: .70rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-d-3);
+  margin: 0 0 var(--s-md);
+}
+.eyebrow b { color: var(--vec-b-d); font-weight: 500; }
+
+h1 {
+  font-size: clamp(2.9rem, 8.2vw, 4.6rem);
+  font-weight: 700;
+  letter-spacing: -.022em;
+  line-height: 1.0;
+  margin: 0 0 var(--s-md);
+  color: var(--ink-d);
+}
+h1 .thin { display: block; font-weight: 500; color: var(--ink-d-2); }
+
+.standfirst {
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--ink-d-2);
+  max-width: 42ch;
+  margin: 0 0 var(--s-lg);
+}
+.standfirst b { color: var(--ink-d); font-weight: 500; }
+
+.actions { display: flex; flex-wrap: wrap; gap: var(--s-sm); margin-bottom: var(--s-lg); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14px 22px;
+  border-radius: var(--r-sm);
+  border: 1px solid transparent;
+  font-family: var(--f-mono);
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+}
+.btn svg { flex: none; }
+
+.btn-primary { background: var(--vec-r); color: #fff; }
+.btn-primary:hover { background: #fff; color: var(--ground); }
+
+.btn-ghost { background: transparent; color: var(--ink-d); border-color: rgba(255,255,255,.26); }
+.btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.5); }
+
+/* the vector key — the legend that fixes hue to meaning ------------------- */
+.key { display: flex; flex-wrap: wrap; gap: var(--s-sm) var(--s-md); margin: 0; padding: 0; list-style: none; }
+.key li {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--f-mono); font-size: .70rem; letter-spacing: .04em;
+  color: var(--ink-d-3);
+}
+.key i { width: 16px; height: 3px; border-radius: 1px; flex: none; }
+
+/* the 3–4–5 figure, exact and WebGL-independent.
+   It sits on an instrument card so the drawn arrows never have to compete
+   with the field arrows behind them. Depth is allowed here; it is the
+   instrument. Nothing below the fold gets this treatment. */
+.figure {
+  position: relative;
+  margin: 0;
+  background: rgba(12, 17, 30, .72);
+  border: 1px solid var(--line-d);
+  border-radius: var(--r-lg);
+  padding: var(--s-md) var(--s-md) var(--s-sm);
+}
+.figure svg { width: 100%; height: auto; display: block; }
+.figure figcaption {
+  font-family: var(--f-mono);
+  font-size: .70rem;
+  letter-spacing: .05em;
+  color: var(--ink-d-3);
+  margin-top: var(--s-sm);
+  text-align: center;
+}
+
+.fig-num { font-family: var(--f-mono); font-size: 13px; font-weight: 500; }
+.fig-lab { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; fill: var(--ink-d-3); }
+
+/* ===========================================================================
+   THE PAPER
+=========================================================================== */
+
+.band { padding-block: var(--s-xxl); }
+.band + .band { padding-top: 0; }
+
+.band-head { margin-bottom: var(--s-lg); }
+.band-head h2 { font-size: clamp(1.55rem, 3.4vw, 1.95rem); letter-spacing: -.012em; margin-bottom: var(--s-sm); }
+
+hr.rule { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+
+/* two routes ------------------------------------------------------------- */
+.routes { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: var(--s-md); }
+
+.route {
+  display: flex; flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: var(--s-lg);
+  text-decoration: none;
+  box-shadow: var(--lift);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.route:hover { transform: translateY(-2px); border-color: var(--ink-2); }
+
+.route .rnum { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: var(--s-md); }
+.route h3 { font-size: 1.3rem; margin-bottom: var(--s-sm); }
+.route p { margin: 0 0 var(--s-md); color: var(--ink-2); font-size: .98rem; }
+.route .go { margin-top: auto; font-family: var(--f-mono); font-size: .74rem; letter-spacing: .07em; text-transform: uppercase; color: var(--vec-r); display: inline-flex; align-items: center; gap: 7px; }
+
+.route[data-tone="deck"] { background: var(--ground); border-color: #1e2942; }
+.route[data-tone="deck"] h3 { color: var(--ink-d); }
+.route[data-tone="deck"] p { color: var(--ink-d-2); }
+.route[data-tone="deck"] .rnum { color: var(--ink-d-3); }
+.route[data-tone="deck"] .go { color: var(--vec-r-d); }
+.route[data-tone="deck"]:hover { border-color: var(--vec-r-d); }
+
+/* syllabus --------------------------------------------------------------- */
+.syl { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: var(--s-md); margin-top: var(--s-lg); }
+.syl-item { border-top: 2px solid var(--ink); padding-top: var(--s-md); }
+.syl-item .code { font-family: var(--f-mono); font-size: 1.15rem; font-weight: 600; color: var(--vec-r); display: block; margin-bottom: var(--s-xs); }
+.syl-item p { margin: 0; font-size: .95rem; color: var(--ink-2); }
+
+/* the eleven films ------------------------------------------------------- */
+.films { display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr)); gap: var(--s-md); list-style: none; margin: 0; padding: 0; }
+.films li { display: flex; }
+
+.film {
+  display: flex; flex-direction: column; width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: var(--lift);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.film:hover { transform: translateY(-2px); border-color: var(--ink-2); }
+
+.film .top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  background: var(--ground);
+  padding: 13px var(--s-md);
+}
+.film .idx { font-family: var(--f-mono); font-size: 1.05rem; font-weight: 600; color: var(--vec-b-d); font-variant-numeric: tabular-nums; }
+.film .ref { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .07em; color: var(--ink-d-3); }
+
+.film .body { padding: var(--s-md); display: flex; flex-direction: column; flex: 1; }
+.film h3 { font-size: 1.08rem; margin-bottom: 7px; }
+.film p { margin: 0 0 var(--s-md); font-size: .9rem; line-height: 1.55; color: var(--ink-2); }
+.film .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.film .foot .watch { color: var(--vec-r); }
+
+/* featured film ---------------------------------------------------------- */
+.feature { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(var(--s-lg), 4vw, var(--s-xl)); align-items: center; }
+.feature video { width: 100%; display: block; border-radius: var(--r-lg); background: var(--ground); border: 1px solid var(--rule); }
+
+/* method list ------------------------------------------------------------ */
+.method { list-style: none; margin: var(--s-lg) 0 0; padding: 0; display: grid; gap: var(--s-md); }
+.method li { display: grid; grid-template-columns: auto 1fr; gap: var(--s-md); align-items: start; }
+.method .m { font-family: var(--f-mono); font-size: .8rem; font-weight: 600; color: var(--vec-a); padding-top: 2px; }
+.method p { margin: 0; color: var(--ink-2); font-size: .97rem; }
+.method strong { color: var(--ink); font-weight: 500; }
+
+/* footer ----------------------------------------------------------------- */
+footer {
+  background: var(--ground);
+  color: var(--ink-d-3);
+  padding-block: var(--s-xl);
+  padding-bottom: calc(var(--s-xl) + env(safe-area-inset-bottom, 0px));
+  margin-top: var(--s-xxl);
+}
+footer .fgrid { display: flex; flex-wrap: wrap; gap: var(--s-md) var(--s-xl); justify-content: space-between; align-items: baseline; }
+footer a { color: var(--ink-d-2); }
+footer .fnav { display: flex; flex-wrap: wrap; gap: var(--s-md); font-family: var(--f-mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; }
+footer .colophon { font-size: .86rem; max-width: 52ch; line-height: 1.55; }
+
+/* ===========================================================================
+   responsive + motion
+=========================================================================== */
+
+@media (max-width: 880px) {
+  .hero { grid-template-columns: 1fr; gap: var(--s-xl); }
+  .figure { max-width: 340px; margin-inline: auto; }
+  .instrument { min-height: 0; padding-block: var(--s-xl) var(--s-xl); }
+  .band { padding-block: var(--s-xl); }
+  footer { margin-top: var(--s-xl); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .route:hover, .film:hover { transform: none; }
+}
+
+@media print {
+  .instrument, footer { background: #fff !important; color: #000 !important; }
+  #field { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- =====================================================================
+     THE INSTRUMENT
+     ===================================================================== -->
+<header class="instrument" id="instrument" data-field="pending">
+  <canvas id="field" aria-hidden="true"></canvas>
+
+  <div class="wrap hero">
+
+    <div>
+      <p class="eyebrow">Cambridge International AS &amp; A Level Physics <b>9702</b> &middot; 1.4 &amp; 4.2.3</p>
+
+      <h1>Vector Analysis<span class="thin">in eleven films</span></h1>
+
+      <p class="standfirst">
+        A scalar is finished when you give a number. A vector is not finished until you give a
+        direction as well — and that direction changes the arithmetic. <b>Eleven short films,
+        eleven worked lessons, and a deck to project.</b>
+      </p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="lesson.html">
+          Start the lesson
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1 6.5h10M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="deck.html">
+          Open the deck
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="1" y="2" width="11" height="8" stroke="currentColor" stroke-width="1.4"/><path d="M5 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+        </a>
+      </div>
+
+      <ul class="key">
+        <li><i style="background:var(--vec-a-d)"></i> first vector &middot; horizontal</li>
+        <li><i style="background:var(--vec-b-d)"></i> second vector &middot; vertical</li>
+        <li><i style="background:var(--vec-r-d)"></i> resultant</li>
+        <li><i style="background:var(--vec-c-d)"></i> third vector</li>
+      </ul>
+    </div>
+
+    <!-- The 3–4–5 triangle: exact, static, and the fallback that carries the
+         band when WebGL is unavailable. Geometry is to scale at 50px per newton. -->
+    <figure class="figure">
+      <svg viewBox="0 0 262 248" role="img" aria-labelledby="figtitle figdesc">
+        <title id="figtitle">A 3.0 newton force east and a 4.0 newton force north</title>
+        <desc id="figdesc">Two perpendicular forces drawn tip to tail and closed by a resultant of 5.0 newtons at 53 degrees above the horizontal.</desc>
+
+        <!-- grid -->
+        <g stroke="rgba(255,255,255,.07)" stroke-width="1">
+          <path d="M40 10V220M90 10V220M140 10V220M190 10V220M240 10V220"/>
+          <path d="M20 210H250M20 160H250M20 110H250M20 60H250M20 10H250"/>
+        </g>
+
+        <!-- right-angle marker at the join -->
+        <path d="M176 210V196H190" fill="none" stroke="var(--ink-d-3)" stroke-width="1.4"/>
+
+        <!-- angle arc at the origin -->
+        <path d="M76 210A36 36 0 0 0 61.4 181.2" fill="none" stroke="var(--vec-r-d)" stroke-width="1.3" opacity=".75"/>
+
+        <!-- a : 3.0 N east -->
+        <path d="M40 210H176" stroke="var(--vec-a-d)" stroke-width="3.2" stroke-linecap="butt"/>
+        <path d="M190 210 176 204.6 176 215.4Z" fill="var(--vec-a-d)"/>
+
+        <!-- b : 4.0 N north, slid to the tip of a -->
+        <path d="M190 210V24" stroke="var(--vec-b-d)" stroke-width="3.2" stroke-linecap="butt"/>
+        <path d="M190 10 184 24 196 24Z" fill="var(--vec-b-d)"/>
+
+        <!-- r : the resultant, 5.0 N -->
+        <path d="M40 210 180.4 22.8" stroke="var(--vec-r-d)" stroke-width="3.4" stroke-linecap="butt"/>
+        <path d="M190 10 176 26.1 184.8 19.5Z" fill="var(--vec-r-d)"/>
+
+        <!-- origin -->
+        <circle cx="40" cy="210" r="3.4" fill="var(--ink-d)"/>
+
+        <!-- numerals, all mono -->
+        <text class="fig-num" x="108" y="232" fill="var(--vec-a-d)" text-anchor="middle">3.0 N</text>
+        <text class="fig-num" x="202" y="120" fill="var(--vec-b-d)">4.0 N</text>
+        <text class="fig-num" x="96" y="104" fill="var(--vec-r-d)" text-anchor="end">5.0 N</text>
+        <text class="fig-num" x="84" y="196" fill="var(--vec-r-d)" font-size="11">53&#176;</text>
+        <text class="fig-lab" x="20" y="238">FILM 04</text>
+      </svg>
+      <figcaption>3&#8211;4&#8211;5, drawn to scale at 50&#8239;px per newton</figcaption>
+    </figure>
+
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- =====================================================================
+       TWO ROUTES
+       ===================================================================== -->
+  <section class="band">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="label">Two ways in</p>
+        <h2>The same eleven films, cut for two rooms</h2>
+        <div class="prose">
+          <p>
+            The films are identical in both. What differs is everything around them: one is built
+            to be read alone at a desk with a pen, the other to be thrown on a wall in front of a
+            class.
+          </p>
+        </div>
+      </div>
+
+      <div class="routes">
+        <a class="route" href="lesson.html">
+          <span class="rnum">For the student</span>
+          <h3>The lesson page</h3>
+          <p>
+            Eleven lessons, each with its film, the worked example under it, three interactive
+            figures you can drag, and ten self-marking questions. Ends with a one-page summary
+            sheet built for the night before.
+          </p>
+          <span class="go">Start the lesson
+            <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1 6.5h10M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+          </span>
+        </a>
+
+        <a class="route" data-tone="deck" href="deck.html">
+          <span class="rnum">For the teacher</span>
+          <h3>The projection deck</h3>
+          <p>
+            Seventeen slides on a locked 16:9 surface. Each film plays the moment its slide
+            arrives. Keyboard, buttons or swipe — never click-anywhere, so the video controls stay
+            usable.
+          </p>
+          <span class="go">Open the deck
+            <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1 6.5h10M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SYLLABUS
+       ===================================================================== -->
+  <section class="band">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="label">What it covers</p>
+        <h2>Four syllabus outcomes, and nothing else</h2>
+        <div class="prose">
+          <p>
+            Checked against the official <em>Cambridge International AS &amp; A Level Physics 9702
+            syllabus for examination in 2025, 2026 and 2027</em>. The equilibrium outcome is
+            <span class="num">4.2.3</span>, not <span class="num">4.3</span> — a distinction worth
+            getting right before it reaches a student.
+          </p>
+        </div>
+      </div>
+
+      <div class="syl">
+        <div class="syl-item">
+          <span class="code">1.4.1</span>
+          <p>Understand the difference between scalar and vector quantities and give examples of each.</p>
+        </div>
+        <div class="syl-item">
+          <span class="code">1.4.2</span>
+          <p>Add and subtract coplanar vectors.</p>
+        </div>
+        <div class="syl-item">
+          <span class="code">1.4.3</span>
+          <p>Represent a vector as two perpendicular components.</p>
+        </div>
+        <div class="syl-item">
+          <span class="code">4.2.3</span>
+          <p>Use a vector triangle to represent coplanar forces in equilibrium.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FEATURED FILM
+       ===================================================================== -->
+  <section class="band">
+    <div class="wrap feature">
+      <div>
+        <p class="label">One film, in full</p>
+        <h2 style="font-size:clamp(1.55rem,3.4vw,1.95rem);letter-spacing:-.012em;margin-bottom:var(--s-sm)">Two vectors at right angles</h2>
+        <div class="prose">
+          <p>
+            The case the exam asks for most often, and the one drawn in the panel above.
+            <span class="num">3.0&#8239;N</span> east and <span class="num">4.0&#8239;N</span> north
+            close into the <span class="num">3</span>&#8211;<span class="num">4</span>&#8211;<span class="num">5</span>
+            triangle, and the angle is converted to a bearing at the end.
+          </p>
+          <p>
+            Every figure in every film is computed from the vector components and checked against a
+            hand-worked value before the frame is allowed to render. No number on this site was
+            typed in by hand.
+          </p>
+        </div>
+      </div>
+      <video controls preload="metadata" playsinline aria-label="Film 04 — two vectors at right angles">
+        <source src="videos/04-perpendicular-resultant.mp4" type="video/mp4">
+        Your browser cannot play this video. The file is <code>videos/04-perpendicular-resultant.mp4</code>.
+      </video>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       THE ELEVEN FILMS
+       ===================================================================== -->
+  <section class="band" id="films">
+    <div class="wrap">
+      <div class="band-head">
+        <p class="label">The index</p>
+        <h2>Eleven films, <span class="num">3&#8239;min&#8239;43&#8239;s</span> end to end</h2>
+        <div class="prose">
+          <p>
+            Each runs about twenty seconds and proves exactly one thing. Pick one and it opens at
+            its lesson, with the working underneath.
+          </p>
+        </div>
+      </div>
+
+      <ul class="films">
+
+        <li><a class="film" href="lesson.html#l1">
+          <span class="top"><span class="idx">01</span><span class="ref">1.4.1</span></span>
+          <span class="body">
+            <h3>Scalar or vector?</h3>
+            <p>The two lists side by side, then the test that separates them: reverse it and see whether anything changed.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:20</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l2">
+          <span class="top"><span class="idx">02</span><span class="ref">1.4</span></span>
+          <span class="body">
+            <h3>Drawing a vector</h3>
+            <p>One 8.0&#8239;N force drawn to a stated scale, its angle marked from the horizontal, and the same force at half the length.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:19</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l3">
+          <span class="top"><span class="idx">03</span><span class="ref">1.4.2</span></span>
+          <span class="body">
+            <h3>Adding vectors tip to tail</h3>
+            <p>Two vectors on a 1&#8239;N grid, slid tip to tail, closed by the resultant — then in the other order, onto the same point.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:20</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l4">
+          <span class="top"><span class="idx">04</span><span class="ref">1.4.2</span></span>
+          <span class="body">
+            <h3>Two vectors at right angles</h3>
+            <p>3.0&#8239;N east and 4.0&#8239;N north, closed into the 3&#8211;4&#8211;5 triangle, with the angle converted to a bearing.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:22</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l5">
+          <span class="top"><span class="idx">05</span><span class="ref">1.4.2</span></span>
+          <span class="body">
+            <h3>When they are not at right angles</h3>
+            <p>5.0&#8239;N and 7.0&#8239;N at 50&#176;, slid tip to tail — where the 130&#176; interior angle comes from, then the cosine rule.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:21</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l6">
+          <span class="top"><span class="idx">06</span><span class="ref">1.4.2</span></span>
+          <span class="body">
+            <h3>Subtracting: reverse, then add</h3>
+            <p><em>b</em> flipped into &#8722;<em>b</em>, slid to the tip of <em>a</em>, and the difference closed off and measured.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:21</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l7">
+          <span class="top"><span class="idx">07</span><span class="ref">1.4.2 &#183; 3.3</span></span>
+          <span class="body">
+            <h3>Change in velocity at a bounce</h3>
+            <p>A ball in, a ball out, and the signed arithmetic that turns two 5.0&#8239;m&#8239;s&#8315;&#185; speeds into a 10&#8239;m&#8239;s&#8315;&#185; change.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:20</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l8">
+          <span class="top"><span class="idx">08</span><span class="ref">1.4.3</span></span>
+          <span class="body">
+            <h3>Resolving into two perpendicular components</h3>
+            <p>A 50&#8239;N rope at 30&#176; split into the part that drags the box along and the part that lifts it.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:19</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l9">
+          <span class="top"><span class="idx">09</span><span class="ref">1.4.3</span></span>
+          <span class="body">
+            <h3>Weight on a slope</h3>
+            <p>A 40&#8239;N weight on a 25&#176; slope, resolved along and into the surface rather than down and across.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:20</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l10">
+          <span class="top"><span class="idx">10</span><span class="ref">4.2.3</span></span>
+          <span class="body">
+            <h3>Equilibrium: the closed triangle</h3>
+            <p>The 3&#8239;N, 4&#8239;N and 5&#8239;N forces from film 04 — the third one balancing the other two — redrawn as a closed triangle.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:20</span></span>
+          </span>
+        </a></li>
+
+        <li><a class="film" href="lesson.html#l11">
+          <span class="top"><span class="idx">11</span><span class="ref">1.4</span></span>
+          <span class="body">
+            <h3>Crossing a river</h3>
+            <p>A 3.0&#8239;m&#8239;s&#8315;&#185; boat in a 2.0&#8239;m&#8239;s&#8315;&#185; current, the resultant path it actually follows, and the 20&#8239;m of drift.</p>
+            <span class="foot"><span class="watch">Watch &amp; read</span><span class="num">0:20</span></span>
+          </span>
+        </a></li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       HOW IT WAS MADE
+       ===================================================================== -->
+  <section class="band">
+    <div class="wrap">
+      <hr class="rule" style="margin-bottom:var(--s-xl)">
+      <div class="band-head">
+        <p class="label">Method</p>
+        <h2>Why the colours never move</h2>
+        <div class="prose">
+          <p>
+            Four hues carry four roles, and they carry them everywhere: in the films, on the slides,
+            in the figures on the lesson page, and in the field at the top of this one. An amber
+            arrow always means the same quantity.
+          </p>
+        </div>
+      </div>
+
+      <ol class="method">
+        <li>
+          <span class="m">01</span>
+          <p><strong>Nothing is typed in.</strong> Every figure in every scene is computed from the
+          vector components and passed through a guard against a hand-worked value. A drift of any
+          size aborts the render rather than shipping a wrong number.</p>
+        </li>
+        <li>
+          <span class="m">02</span>
+          <p><strong>The palette defers to the films.</strong> Eleven films are already rendered, so
+          the page takes its colours from them and not the other way round. The design search
+          proposed an education teal as a brand colour; it collides with the hue that already means
+          &ldquo;third vector&rdquo;, so it was refused.</p>
+        </li>
+        <li>
+          <span class="m">03</span>
+          <p><strong>Register over friendliness.</strong> The same search proposed Baloo&nbsp;2 and
+          Comic&nbsp;Neue for &ldquo;education&rdquo;. Those are tuned for children&rsquo;s apps.
+          The reader here is seventeen and sitting an A level, so the page is set in IBM Plex —
+          condensed for headings, serif for prose, mono for every number.</p>
+        </li>
+        <li>
+          <span class="m">04</span>
+          <p><strong>The field is real.</strong> The arrows above are a divergence-free vector field
+          sampled on a lattice, coloured by which role each arrow is playing. It is not a particle
+          effect, and if your machine cannot run it the panel falls back to the drawn triangle with
+          nothing lost.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <p class="colophon">
+      Built for Cambridge International AS &amp; A Level Physics 9702.
+      Films rendered with Manim at 1080p30. Design system recorded in
+      <a href="DESIGN.md">DESIGN.md</a>.
+    </p>
+    <nav class="fnav" aria-label="Site">
+      <a href="lesson.html">Lesson</a>
+      <a href="deck.html">Deck</a>
+      <a href="#films">Films</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- =========================================================================
+     THE FIELD
+
+     Field contract (threejs-procedural-fields):
+
+       worldPosition
+         → macroSweep + mesoSwirl + microShear   three frequency bands of a
+                                                 sinusoidal vector potential
+         → flow                                  v = curl Psi, divergence-free
+                                                 by construction, not by luck
+         → speed, verticality, depth             derived causes
+         → orientation, length, role colour      material channels
+
+     The potential is a sum of terms a_k sin(k_k . p + phi_k + w_k t), so the
+     curl is exact and analytic:  curl Psi = sum cos(k.p + phi + wt) (k x a).
+     No noise, no finite differences, no per-frame allocation. Deterministic:
+     there is no call to Math.random anywhere in this file.
+
+     Colour is the one visual rule, and it is the site's own meaning:
+       mostly horizontal -> first vector      mostly vertical -> second vector
+       fastest           -> resultant         slowest         -> third vector
+
+     Debug: window.__field.debug('role' | 'speed' | 'verticality' | 'depth')
+            window.__field.params
+     ===================================================================== -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+const band = document.getElementById('instrument');
+const canvas = document.getElementById('field');
+
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* --- parameters, grouped by perceptual role ----------------------------- */
+const P = {
+  lattice:   { nx: 13, ny: 7, nz: 6, spacing: 0.84, jitter: 0.30 },
+  arrow:     { minLength: 0.16, maxLength: 0.42, thickness: 0.019 },
+  field:     { timeScale: 0.055, swirl: 1.0, dim: 0.70 },
+  role:      { fastQuantile: 0.78, verticalCut: 0.60, horizontalCut: 0.30 },
+  camera:    { fov: 40, distance: 9.6, driftX: 0.55, driftY: 0.26, parallax: 0.6 },
+  depth:     { near: 6.0, far: 15.0, floor: 0.05 }
+};
+
+/* --- the vector potential: three named frequency bands ------------------ */
+/* Each term is a constant vector a, a wave vector k, a phase and a rate.
+   curl of a*sin(k.p + phi + w t) is cos(k.p + phi + w t) * (k cross a).     */
+const TERMS = [
+  /* macroSweep — sets the silhouette of the flow, one slow band            */
+  { a: [ 0.00,  0.00,  1.00], k: [ 0.42,  0.30,  0.00], phi: 0.00, w: 0.55 },
+  { a: [ 1.00,  0.00,  0.00], k: [ 0.00,  0.52,  0.24], phi: 1.90, w: 0.42 },
+  /* mesoSwirl — the readable eddies                                        */
+  { a: [ 0.00,  0.62,  0.00], k: [ 0.95,  0.00,  0.58], phi: 3.10, w: 0.78 },
+  { a: [ 0.46,  0.00,  0.46], k: [ 0.00,  1.06,  0.00], phi: 0.80, w: 0.66 },
+  /* microShear — breaks lattice alignment without adding noise             */
+  { a: [ 0.00,  0.00,  0.24], k: [ 1.85,  1.42,  0.00], phi: 2.35, w: 1.05 }
+];
+
+/* precompute k x a once; it is constant for the life of the page */
+for (const t of TERMS) {
+  const [kx, ky, kz] = t.k, [ax, ay, az] = t.a;
+  t.c = [ky * az - kz * ay, kz * ax - kx * az, kx * ay - ky * ax];
+}
+
+const flow = { x: 0, y: 0, z: 0 };
+function sampleFlow(x, y, z, t) {
+  let fx = 0, fy = 0, fz = 0;
+  for (let i = 0; i < TERMS.length; i++) {
+    const T = TERMS[i];
+    const s = Math.cos(T.k[0] * x + T.k[1] * y + T.k[2] * z + T.phi + T.w * t);
+    fx += s * T.c[0]; fy += s * T.c[1]; fz += s * T.c[2];
+  }
+  flow.x = fx * P.field.swirl; flow.y = fy * P.field.swirl; flow.z = fz * P.field.swirl;
+}
+
+/* deterministic per-cell jitter — a hash, never Math.random */
+function hash(i) {
+  let n = (i * 374761393 + 668265263) | 0;
+  n = (n ^ (n >>> 13)) | 0;
+  n = Math.imul(n, 1274126177) | 0;
+  return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+}
+
+let api = { debug: () => {}, params: P };
+
+try {
+  if (!canvas.getContext('webgl2') && !canvas.getContext('webgl')) throw new Error('no webgl');
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'low-power' });
+  renderer.setClearColor(0x080c16, 1);
+  /* Own the output colour. No tone mapping: the hex values in DESIGN.md are
+     authored in sRGB and the contrast guarantees depend on them landing exactly. */
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.NoToneMapping;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(P.camera.fov, 1, 0.1, 100);
+
+  /* --- arrow geometry: one shaft, one head, both pointing +Y ------------
+     UNIT is the shaft's reference length. An instance scales the shaft to its
+     own length but leaves the head at its authored size, so arrowheads stay
+     readable on short arrows instead of shrinking into dots.               */
+  const th = P.arrow.thickness;
+  const UNIT = 0.62;
+  const HEAD_LEN = 0.115;
+  const shaftGeo = new THREE.CylinderGeometry(th, th, UNIT, 5, 1, true).translate(0, UNIT / 2, 0);
+  const headGeo  = new THREE.ConeGeometry(th * 3.2, HEAD_LEN, 7).translate(0, UNIT + HEAD_LEN / 2, 0);
+
+  const mat = new THREE.MeshBasicMaterial({ toneMapped: false });
+
+  const N = P.lattice.nx * P.lattice.ny * P.lattice.nz;
+  const shafts = new THREE.InstancedMesh(shaftGeo, mat, N);
+  const heads  = new THREE.InstancedMesh(headGeo,  mat, N);
+  shafts.frustumCulled = false; heads.frustumCulled = false;
+  shafts.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  heads.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  scene.add(shafts, heads);
+
+  /* --- lattice: stable coordinates, jittered deterministically ---------- */
+  const home = new Float32Array(N * 3);
+  {
+    const { nx, ny, nz, spacing, jitter } = P.lattice;
+    let i = 0;
+    for (let ix = 0; ix < nx; ix++)
+      for (let iy = 0; iy < ny; iy++)
+        for (let iz = 0; iz < nz; iz++, i++) {
+          home[i * 3    ] = (ix - (nx - 1) / 2) * spacing * 1.34 + (hash(i * 3 + 1) - 0.5) * jitter;
+          home[i * 3 + 1] = (iy - (ny - 1) / 2) * spacing        + (hash(i * 3 + 2) - 0.5) * jitter;
+          home[i * 3 + 2] = (iz - (nz - 1) / 2) * spacing * 1.15 + (hash(i * 3 + 3) - 0.5) * jitter;
+        }
+  }
+
+  /* --- the four role colours, read from the stylesheet so the page and the
+         field can never drift apart ------------------------------------- */
+  const css = getComputedStyle(document.documentElement);
+  const ROLE = {
+    a: new THREE.Color(css.getPropertyValue('--vec-a-d').trim() || '#4C9AFF'),
+    b: new THREE.Color(css.getPropertyValue('--vec-b-d').trim() || '#FFB020'),
+    r: new THREE.Color(css.getPropertyValue('--vec-r-d').trim() || '#FF5CA8'),
+    c: new THREE.Color(css.getPropertyValue('--vec-c-d').trim() || '#2EC4B6')
+  };
+  /* three's ColorManagement already converts sRGB hex into the linear working
+     space on construction, so these must NOT be converted a second time. */
+  const GROUND = new THREE.Color(0x080c16);
+
+  const up = new THREE.Vector3(0, 1, 0);
+  const dir = new THREE.Vector3();
+  const quat = new THREE.Quaternion();
+  const pos = new THREE.Vector3();
+  const scl = new THREE.Vector3();
+  const m4 = new THREE.Matrix4();
+  const col = new THREE.Color();
+
+  let debugMode = 'role';
+
+  function update(t) {
+    const { minLength, maxLength } = P.arrow;
+    const { fastQuantile, verticalCut, horizontalCut } = P.role;
+    const { near, far, floor } = P.depth;
+
+    for (let i = 0; i < N; i++) {
+      const x = home[i * 3], y = home[i * 3 + 1], z = home[i * 3 + 2];
+
+      sampleFlow(x, y, z, t);
+
+      /* --- derived causes -------------------------------------------- */
+      const speed = Math.hypot(flow.x, flow.y, flow.z) || 1e-6;
+      const verticality = Math.abs(flow.y) / speed;
+      const norm = Math.min(speed / 1.35, 1);                 /* 0..1 */
+
+      dir.set(flow.x / speed, flow.y / speed, flow.z / speed);
+      quat.setFromUnitVectors(up, dir);
+
+      const len = minLength + (maxLength - minLength) * norm;
+      pos.set(x, y, z);
+      scl.set(1, len / UNIT, 1);
+      m4.compose(pos, quat, scl);
+      shafts.setMatrixAt(i, m4);
+
+      /* the head rides the same orientation but keeps its authored size, so it
+         is slid back along the arrow to sit exactly at the end of the shaft */
+      const back = len - UNIT;
+      scl.set(1, 1, 1);
+      pos.set(x + dir.x * back, y + dir.y * back, z + dir.z * back);
+      m4.compose(pos, quat, scl);
+      heads.setMatrixAt(i, m4);
+
+      /* --- material channels ----------------------------------------- */
+      if (debugMode === 'role') {
+        if (norm > fastQuantile)            col.copy(ROLE.r);
+        else if (verticality > verticalCut) col.copy(ROLE.b);
+        else if (verticality < horizontalCut) col.copy(ROLE.a);
+        else                                col.copy(ROLE.c);
+      } else if (debugMode === 'speed') {
+        col.setRGB(norm, norm, norm);
+      } else if (debugMode === 'verticality') {
+        col.setRGB(verticality, 1 - verticality, 0.2);
+      } else {
+        col.setRGB(1, 1, 1);
+      }
+
+      /* depth fade, baked into colour rather than opacity: no transparency,
+         no sorting, and on this ground it is visually identical */
+      const d = camera.position.distanceTo(pos);
+      let f = 1 - (d - near) / (far - near);
+      f = Math.max(floor, Math.min(1, f));
+      if (debugMode === 'depth') col.setRGB(f, f, f);
+      else col.lerp(GROUND, 1 - f * P.field.dim);
+
+      shafts.setColorAt(i, col);
+      heads.setColorAt(i, col);
+    }
+
+    shafts.instanceMatrix.needsUpdate = true;
+    heads.instanceMatrix.needsUpdate = true;
+    if (shafts.instanceColor) shafts.instanceColor.needsUpdate = true;
+    if (heads.instanceColor)  heads.instanceColor.needsUpdate  = true;
+  }
+
+  /* --- camera: slow drift plus a damped pointer parallax ---------------- */
+  const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+  if (!reduced) {
+    window.addEventListener('pointermove', (e) => {
+      pointer.tx = (e.clientX / window.innerWidth  - 0.5) * 2;
+      pointer.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+  }
+
+  function placeCamera(t) {
+    pointer.x += (pointer.tx - pointer.x) * 0.045;
+    pointer.y += (pointer.ty - pointer.y) * 0.045;
+    const { distance, driftX, driftY, parallax } = P.camera;
+    camera.position.set(
+      Math.sin(t * 0.085) * driftX + pointer.x * parallax,
+      Math.sin(t * 0.062) * driftY - pointer.y * parallax * 0.55,
+      distance
+    );
+    camera.lookAt(0, 0, 0);
+  }
+
+  function resize() {
+    const w = band.clientWidth, h = band.clientHeight;
+    if (!w || !h) return;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    /* widen the field on narrow viewports so it never reads as a crop */
+    camera.fov = w < 700 ? P.camera.fov + 14 : P.camera.fov;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+
+  /* --- loop, paused whenever it cannot be seen --------------------------
+     simTime accumulates across pauses so scrolling away and back does not
+     jump the field. The delta is clamped so a long pause cannot teleport it. */
+  let raf = 0, running = false, simTime = 0;
+  const clock = new THREE.Clock(false);
+
+  function frame() {
+    if (!running) return;
+    simTime += Math.min(clock.getDelta(), 0.05);
+    placeCamera(simTime);
+    update(simTime * P.field.timeScale * 18);
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (running || reduced) return;
+    running = true;
+    clock.start();
+    raf = requestAnimationFrame(frame);
+  }
+  function stop() {
+    if (!running) return;
+    running = false;
+    clock.stop();
+    cancelAnimationFrame(raf);
+  }
+
+  /* the static first frame, which must read on its own */
+  placeCamera(0);
+  update(0);
+  renderer.render(scene, camera);
+  band.dataset.field = 'on';
+
+  if (!reduced) {
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (es) => { es[0].isIntersecting ? start() : stop(); },
+        { threshold: 0.02 }
+      ).observe(band);
+    } else {
+      start();
+    }
+    document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+  }
+
+  /* renderer context loss: fall back rather than leave a black hole */
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stop(); band.dataset.field = 'off'; });
+
+  api = {
+    params: P,
+    debug(mode) {
+      debugMode = mode || 'role';
+      if (!running) { update(simTime * P.field.timeScale * 18); renderer.render(scene, camera); }
+      return debugMode;
+    },
+    start, stop
+  };
+
+} catch (err) {
+  band.dataset.field = 'off';
+  console.info('Vector field disabled; the drawn triangle carries the panel.', err && err.message);
+}
+
+window.__field = api;
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Vector Analysis for CIE 9702",
+  "description": "Eleven rendered films, eleven worked lessons and a projection deck covering scalars and vectors, coplanar vector addition and subtraction, perpendicular components, and the equilibrium vector triangle for Cambridge International AS & A Level Physics 9702.",
+  "educationalLevel": "Cambridge International AS & A Level",
+  "teaches": ["Scalars and vectors", "Adding and subtracting coplanar vectors", "Resolving into perpendicular components", "Vector triangle for forces in equilibrium"],
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "online",
+    "courseWorkload": "PT15M"
+  }
+}
+</script>
+
+</body>
+</html>

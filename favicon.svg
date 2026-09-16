@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#080C16"/>
+  <!-- the 3-4-5 triangle, the site's own figure at icon scale -->
+  <g stroke-linecap="butt" fill="none">
+    <path d="M14 50h27" stroke="#4C9AFF" stroke-width="4"/>
+    <path d="M45 50V23" stroke="#FFB020" stroke-width="4"/>
+    <path d="M14 50 42.6 15.8" stroke="#FF5CA8" stroke-width="4.4"/>
+  </g>
+  <path d="M49 50 40 46.4 40 53.6Z" fill="#4C9AFF"/>
+  <path d="M45 14 40 25 50 25Z" fill="#FFB020"/>
+  <path d="M46 12 35.6 24.4 43 20.6Z" fill="#FF5CA8"/>
+</svg>

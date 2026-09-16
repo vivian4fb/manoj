@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A seventeen-slide projection deck on vectors for Cambridge International AS &amp; A Level Physics 9702, built around eleven rendered films.">
+<meta name="theme-color" content="#080C16">
+<meta property="og:title" content="Vectors in Eleven Films - the deck">
+<meta property="og:description" content="A seventeen-slide projection deck on vectors for Cambridge International AS &amp; A Level Physics 9702, built around eleven rendered films.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Vectors in Eleven Films</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;900&family=Work+Sans:wght@400;500;600&family=Roboto+Mono:wght@400;500;700&display=swap">
+
+<style>
+/* ===========================================================================
+   Vectors in Eleven Films — CIE 9702 teaching deck
+
+   Design system sourced from the vendored ui-ux-pro-max skill:
+     style      Dark Mode (OLED)      — its --design-system pick, and it lets the
+                                        films sit on the slide with no seam
+     typography Outfit + Work Sans + Roboto Mono — its "Bauhaus Geometric",
+                                        "Geometric Modern" and "Science/Tech" rows.
+                                        Its education match (Baloo 2 + Comic Neue)
+                                        was rejected: wrong register for A level.
+     deck shell 16:9 lock, progress bar, counter — the NBG `slides` skill.
+
+   Colour is the films' own vector palette, so an amber arrow on a slide and an
+   amber arrow on screen are the same quantity. Each slide takes its accent from
+   the vector role it teaches.
+=========================================================================== */
+
+:root {
+  --ground:      #080C16;
+  --stage:       #0B1020;
+  --card:        #141C2E;
+  --ink:         #FFFFFF;
+  --ink-2:       #C7D2E4;
+  --ink-3:       #8496B4;
+  --line:        rgba(255, 255, 255, 0.10);
+
+  --blue:        #4C9AFF;
+  --amber:       #FFB020;
+  --magenta:     #FF5CA8;
+  --teal:        #2EC4B6;
+
+  --f-display:   "Outfit", "Segoe UI", system-ui, sans-serif;
+  --f-body:      "Work Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:      "Roboto Mono", Consolas, ui-monospace, monospace;
+
+  --accent:      var(--magenta);
+  color-scheme: dark;
+}
+
+/* The deck commits to one visual world: a dark projection surface. It paints
+   its own ground explicitly so it holds on either host theme. */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--f-body);
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* --- fixed 1600x900 design surface, scaled to fit any viewport ----------- */
+#fit {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, rgba(255, 92, 168, 0.10), transparent 70%),
+    var(--ground);
+}
+#stage {
+  width: 1600px; height: 900px;
+  transform-origin: center center;
+  position: relative;
+  background: var(--stage);
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, .6);
+}
+
+/* --- slides -------------------------------------------------------------- */
+.slide {
+  position: absolute; inset: 0;
+  padding: 72px 88px 96px;
+  opacity: 0; visibility: hidden;
+  transition: opacity .38s ease;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.slide.active { opacity: 1; visibility: visible; }
+
+/* Accent per slide — the vector role it teaches. */
+.slide[data-accent="blue"]    { --accent: var(--blue); }
+.slide[data-accent="amber"]   { --accent: var(--amber); }
+.slide[data-accent="magenta"] { --accent: var(--magenta); }
+.slide[data-accent="teal"]    { --accent: var(--teal); }
+
+/* Accent wash + the squared-paper motif from the lesson page. */
+.slide::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(760px 460px at 88% 8%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 68%),
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size: auto, 40px 40px, 40px 40px;
+}
+.slide > * { position: relative; z-index: 1; }
+
+/* Giant outlined slide number, bottom-right. */
+.ghost {
+  position: absolute; right: 54px; bottom: 58px; z-index: 0;
+  font-family: var(--f-display); font-weight: 900; font-size: 190px; line-height: 1;
+  color: transparent; -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 26%, transparent);
+  letter-spacing: -0.04em; pointer-events: none; user-select: none;
+}
+
+/* --- type ---------------------------------------------------------------- */
+h1, h2, h3 { font-family: var(--f-display); margin: 0; line-height: 1.04; letter-spacing: -0.025em; }
+h1 { font-size: 116px; font-weight: 900; }
+h2 { font-size: 66px; font-weight: 700; }
+h3 { font-size: 27px; font-weight: 700; letter-spacing: -0.01em; }
+p  { margin: 0; }
+
+.grad {
+  background: linear-gradient(96deg, var(--magenta) 4%, var(--blue) 52%, var(--teal) 96%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.eyebrow {
+  font-family: var(--f-mono); font-size: 15px; font-weight: 500;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--f-mono); font-size: 15px; font-weight: 500;
+  padding: 7px 14px; border-radius: 999px;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+}
+.chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+/* --- title slide --------------------------------------------------------- */
+.t-wrap { display: flex; flex-direction: column; gap: 26px; max-width: 1180px; }
+.t-sub { font-size: 30px; color: var(--ink-2); max-width: 30ch; line-height: 1.42; }
+.t-meta { display: flex; gap: 40px; margin-top: 16px; font-family: var(--f-mono); font-size: 17px; color: var(--ink-3); }
+.t-meta b { color: var(--ink); font-weight: 500; }
+.rule { height: 5px; width: 180px; border-radius: 3px;
+        background: linear-gradient(90deg, var(--magenta), var(--blue), var(--teal)); }
+
+/* Title-slide motif: the 3–4–5 triangle the whole topic keeps returning to. */
+.hero-tri {
+  position: absolute; right: 96px; top: 50%; transform: translateY(-50%);
+  width: 560px; height: auto; z-index: 0; pointer-events: none;
+}
+.hero-tri .lab { font-family: var(--f-mono); font-size: 22px; font-weight: 500; }
+
+/* --- film slides: video left, points right ------------------------------- */
+.head { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+.head .n {
+  font-family: var(--f-mono); font-size: 19px; font-weight: 700; color: var(--accent);
+}
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: center; }
+.split.wide { grid-template-columns: 1.22fr 1fr; }
+
+.film {
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.4), 0 26px 70px color-mix(in srgb, var(--accent) 16%, transparent);
+  background: #0E1522;
+}
+.film video { display: block; width: 100%; height: auto; aspect-ratio: 16/9; background: #0E1522; }
+.film-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 10px 14px; border-top: 1px solid var(--line);
+  font-family: var(--f-mono); font-size: 13px; color: var(--ink-3);
+}
+.replay {
+  font-family: var(--f-mono); font-size: 12.5px; color: var(--accent);
+  background: none; border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 5px; padding: 4px 10px; cursor: pointer;
+}
+.replay:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+
+.points { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.points li {
+  font-size: 25px; line-height: 1.46; color: var(--ink-2);
+  padding-left: 26px; position: relative;
+}
+.points li::before {
+  content: ""; position: absolute; left: 0; top: .66em;
+  width: 13px; height: 3px; border-radius: 2px; background: var(--accent);
+}
+.points li b { color: var(--ink); font-weight: 600; }
+.points li .m { font-family: var(--f-mono); color: var(--ink); font-size: 23px; }
+
+.note {
+  margin-top: 30px; padding: 16px 20px; border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-left: 3px solid var(--accent);
+  font-size: 20px; color: var(--ink-2); line-height: 1.45;
+}
+.note b { font-family: var(--f-display); color: var(--accent); font-weight: 700; }
+
+/* --- card grids ---------------------------------------------------------- */
+.grid { display: grid; gap: 22px; }
+.grid.c4 { grid-template-columns: repeat(4, 1fr); }
+.grid.c3 { grid-template-columns: repeat(3, 1fr); }
+.grid.c2 { grid-template-columns: repeat(2, 1fr); }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 26px 24px; display: flex; flex-direction: column; gap: 12px;
+}
+.card .k { font-family: var(--f-mono); font-size: 14px; color: var(--accent); letter-spacing: .06em; }
+.card h3 { color: var(--ink); }
+.card p { font-size: 19px; color: var(--ink-3); line-height: 1.45; }
+.card.lit { border-color: color-mix(in srgb, var(--accent) 46%, transparent); }
+
+.fx {
+  font-family: var(--f-mono); font-size: 26px; font-weight: 500; color: var(--ink);
+  line-height: 1.5;
+}
+.fx .u { color: var(--accent); }
+
+/* --- big number ---------------------------------------------------------- */
+.big {
+  font-family: var(--f-display); font-weight: 900; font-size: 150px; line-height: .95;
+  letter-spacing: -0.04em;
+}
+
+/* --- chrome -------------------------------------------------------------- */
+#bar {
+  position: absolute; left: 0; bottom: 0; height: 4px; width: 0%;
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--teal));
+  transition: width .38s ease; z-index: 3;
+}
+#chrome {
+  position: absolute; left: 88px; bottom: 34px; right: 88px; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--f-mono); font-size: 14px; color: var(--ink-3);
+}
+#chrome .brand { letter-spacing: .16em; text-transform: uppercase; }
+.navs { display: flex; align-items: center; gap: 10px; }
+.navbtn {
+  width: 36px; height: 30px; border-radius: 6px; cursor: pointer;
+  background: rgba(255,255,255,.05); border: 1px solid var(--line);
+  color: var(--ink-2); font-size: 15px; line-height: 1; font-family: var(--f-mono);
+}
+.navbtn:hover { background: rgba(255,255,255,.12); color: var(--ink); }
+#count { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+
+:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; }
+
+/* --- portrait phones: the deck is a landscape object --------------------- */
+#rotate {
+  position: fixed; inset: 0; z-index: 20; display: none;
+  place-items: center; text-align: center; padding: 32px;
+  background: var(--ground); color: var(--ink-2);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.5;
+}
+#rotate .r-in { max-width: 32ch; display: flex; flex-direction: column; gap: 14px; }
+#rotate strong { font-family: var(--f-display); font-size: 23px; color: var(--ink); }
+@media (max-width: 700px) and (orientation: portrait) {
+  #rotate { display: grid; }
+  #fit { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: none; }
+  #bar { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="rotate">
+  <div class="r-in">
+    <strong>Turn your phone sideways</strong>
+    <span>This deck is built on a 16:9 slide. In landscape it fills the screen; the
+      lesson page is the better read on a portrait phone.</span>
+  </div>
+</div>
+
+<div id="fit">
+  <div id="stage">
+
+    <!-- 1 ================================================================ -->
+    <section class="slide active" data-accent="magenta">
+      <div class="t-wrap">
+        <div class="eyebrow">Cambridge International AS &amp; A Level Physics 9702</div>
+        <h1 class="grad">Vector<br>analysis</h1>
+        <div class="rule"></div>
+        <p class="t-sub">Eleven films, one triangle, and the four rules every
+          resultant question in the paper comes down to.</p>
+        <div class="t-meta">
+          <span>Syllabus <b>1.4</b> · <b>4.2</b></span>
+          <span><b>11</b> films · <b>3 min 43 s</b></span>
+          <span><b>17</b> slides</span>
+        </div>
+      </div>
+
+      <svg class="hero-tri" viewBox="0 0 520 430" aria-hidden="true">
+        <defs>
+          <marker id="t-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#4C9AFF"></path>
+          </marker>
+          <marker id="t-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#FFB020"></path>
+          </marker>
+          <marker id="t-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="#FF5CA8"></path>
+          </marker>
+        </defs>
+        <polygon points="70,370 370,370 370,130" fill="#FF5CA8" fill-opacity="0.05"></polygon>
+        <path d="M352 370 L352 352 L370 352" fill="none" stroke="#8496B4" stroke-width="2.5"></path>
+        <line x1="70" y1="370" x2="370" y2="370" stroke="#4C9AFF" stroke-width="7" marker-end="url(#t-a)"></line>
+        <line x1="370" y1="370" x2="370" y2="130" stroke="#FFB020" stroke-width="7" marker-end="url(#t-b)"></line>
+        <line x1="70" y1="370" x2="370" y2="130" stroke="#FF5CA8" stroke-width="8" marker-end="url(#t-r)"></line>
+        <text class="lab" x="205" y="404" fill="#4C9AFF" text-anchor="middle">3.0 N</text>
+        <text class="lab" x="392" y="255" fill="#FFB020">4.0 N</text>
+        <text class="lab" x="178" y="232" fill="#FF5CA8" text-anchor="middle">5.0 N</text>
+      </svg>
+    </section>
+
+    <!-- 2 ================================================================ -->
+    <section class="slide" data-accent="blue">
+      <div class="head"><h2>What the syllabus actually asks</h2></div>
+      <p style="font-size:22px;color:var(--ink-3);margin-bottom:30px;max-width:70ch;">
+        Four learning outcomes. Everything else in this deck exists to serve them.</p>
+      <div class="grid c4">
+        <div class="card lit">
+          <span class="k">1.4.1</span>
+          <h3>Tell them apart</h3>
+          <p>Understand the difference between scalar and vector quantities, and give examples.</p>
+        </div>
+        <div class="card lit">
+          <span class="k">1.4.2</span>
+          <h3>Add and subtract</h3>
+          <p>Add and subtract coplanar vectors.</p>
+        </div>
+        <div class="card lit">
+          <span class="k">1.4.3</span>
+          <h3>Resolve</h3>
+          <p>Represent a vector as two perpendicular components.</p>
+        </div>
+        <div class="card lit">
+          <span class="k">4.2.3</span>
+          <h3>Close the triangle</h3>
+          <p>Use a vector triangle to represent coplanar forces in equilibrium.</p>
+        </div>
+      </div>
+      <div class="ghost">02</div>
+    </section>
+
+    <!-- 3 ================================================================ -->
+    <section class="slide" data-accent="blue">
+      <div class="head">
+        <span class="n">01</span><h2>Scalar or vector?</h2>
+        <span class="chip"><span class="dot"></span>1.4.1</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/01-scalars-and-vectors.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 01 · 0:20</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>A scalar is finished at <b>a number and a unit</b>. A vector is not stated until you give a direction.</li>
+            <li>The test: <b>reverse it.</b> If something changed, it was a vector.</li>
+            <li>Once round a 400 m track — distance <span class="m">400 m</span>, displacement <span class="m">0</span>.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> Momentum and weight are vectors because each is built
+            from one: mass × velocity, mass × g.</div>
+        </div>
+      </div>
+      <div class="ghost">03</div>
+    </section>
+
+    <!-- 4 ================================================================ -->
+    <section class="slide" data-accent="amber">
+      <div class="head">
+        <span class="n">02</span><h2>Drawing a vector</h2>
+        <span class="chip"><span class="dot"></span>1.4</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/02-representing-vectors.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 02 · 0:19</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li><b>Length is the magnitude</b>, read against a scale you state: <span class="m">1 cm ≡ 2.0 N</span>.</li>
+            <li><b>The arrowhead is the direction</b>, measured from a reference you also state.</li>
+            <li>Write it <span class="m">F⃗</span>, <b>F</b> or <span class="m">F</span> underlined; the magnitude alone is <span class="m">|F⃗|</span>.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> An angle quoted with no reference earns nothing.
+            "35° above the horizontal" — or a three-figure bearing.</div>
+        </div>
+      </div>
+      <div class="ghost">04</div>
+    </section>
+
+    <!-- 5 ================================================================ -->
+    <section class="slide" data-accent="magenta">
+      <div class="head">
+        <span class="n">03</span><h2>Tip to tail</h2>
+        <span class="chip"><span class="dot"></span>1.4.2</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/03-tip-to-tail.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 03 · 0:20</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>Slide the second vector until its tail meets the first tip — <b>without turning it</b>.</li>
+            <li>The resultant runs <b>first tail to last tip</b>.</li>
+            <li><span class="m">a + b = b + a</span>. Draw both orders and you have the parallelogram.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> On a scale drawing, state the scale before you
+            measure anything off it.</div>
+        </div>
+      </div>
+      <div class="ghost">05</div>
+    </section>
+
+    <!-- 6 ================================================================ -->
+    <section class="slide" data-accent="blue">
+      <div class="head">
+        <span class="n">04</span><h2>At right angles</h2>
+        <span class="chip"><span class="dot"></span>1.4.2</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/04-perpendicular-resultant.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 04 · 0:22</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>No instruments needed: <span class="m">R = √(F<sub>x</sub>² + F<sub>y</sub>²)</span>.</li>
+            <li><span class="m">θ = tan⁻¹(F<sub>y</sub> / F<sub>x</sub>)</span>, measured from the <span class="m">F<sub>x</sub></span> direction.</li>
+            <li>Learn <b>3–4–5</b> and <b>5–12–13</b> — examiners use them so arithmetic isn't the test.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> "53°" is not an answer. "53° above east", or
+            "bearing 037°", is.</div>
+        </div>
+      </div>
+      <div class="ghost">06</div>
+    </section>
+
+    <!-- 7 ================================================================ -->
+    <section class="slide" data-accent="teal">
+      <div class="head">
+        <span class="n">05</span><h2>Not at right angles</h2>
+        <span class="chip"><span class="dot"></span>1.4.2</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/05-non-perpendicular-resultant.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 05 · 0:21</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>Same triangle, harder trigonometry. A careful scale drawing is still accepted.</li>
+            <li><span class="m">R² = a² + b² − 2ab cos C</span>, where <b>C is the triangle's interior angle</b>.</li>
+            <li>If the angle between them is <span class="m">φ</span>, then <span class="m">C = 180° − φ</span>.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> <span style="font-family:var(--f-mono)">cos 130°</span>
+            is negative — that is exactly why the resultant beats both forces.</div>
+        </div>
+      </div>
+      <div class="ghost">07</div>
+    </section>
+
+    <!-- 8 ================================================================ -->
+    <section class="slide" data-accent="amber">
+      <div class="head">
+        <span class="n">06</span><h2>Subtracting</h2>
+        <span class="chip"><span class="dot"></span>1.4.2</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/06-vector-subtraction.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 06 · 0:21</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>There is <b>no separate subtraction rule</b>: <span class="m">a − b = a + (−b)</span>.</li>
+            <li>Reversing a vector changes its direction and <b>nothing else</b>.</li>
+            <li><span class="m">b − a</span> is the same length as <span class="m">a − b</span>, pointing the opposite way.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> This is the whole method behind every change-in-velocity
+            and change-in-momentum question.</div>
+        </div>
+      </div>
+      <div class="ghost">08</div>
+    </section>
+
+    <!-- 9 ================================================================ -->
+    <section class="slide" data-accent="magenta">
+      <div class="head">
+        <span class="n">07</span><h2>A bounce changes velocity, not speed</h2>
+        <span class="chip"><span class="dot"></span>1.4.2 · 3.3</span>
+      </div>
+      <div class="split wide">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/07-change-in-velocity.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 07 · 0:20</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <div class="big grad">2mv</div>
+          <p style="font-size:21px;color:var(--ink-3);margin:10px 0 22px;">the momentum change at a
+            straight bounce — not zero, and not <span style="font-family:var(--f-mono)">mv</span></p>
+          <ul class="points">
+            <li><span class="m">Δv = v<sub>final</sub> − v<sub>initial</sub></span> — a vector subtraction.</li>
+            <li>Choose a positive direction, state it, then it is only signs.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> <span style="font-family:var(--f-mono)">(−5.0) − (+5.0) = −10 m s⁻¹</span>.
+            Writing <span style="font-family:var(--f-mono)">5.0 − 5.0 = 0</span> is the single most common error in this topic.</div>
+        </div>
+      </div>
+      <div class="ghost">09</div>
+    </section>
+
+    <!-- 10 =============================================================== -->
+    <section class="slide" data-accent="teal">
+      <div class="head">
+        <span class="n">08</span><h2>Resolving</h2>
+        <span class="chip"><span class="dot"></span>1.4.3</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/08-resolving-components.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 08 · 0:19</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>Addition run backwards: any vector splits into <b>two perpendicular parts</b> that rebuild it exactly.</li>
+            <li>Along the direction: <span class="m">F cos θ</span>. At right angles to it: <span class="m">F sin θ</span>.</li>
+            <li><b>θ is measured from the "along" direction</b> — not from the horizontal by default.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> Test it by letting <span style="font-family:var(--f-mono)">θ → 0</span>:
+            the along-component should become the whole force.</div>
+        </div>
+      </div>
+      <div class="ghost">10</div>
+    </section>
+
+    <!-- 11 =============================================================== -->
+    <section class="slide" data-accent="blue">
+      <div class="head">
+        <span class="n">09</span><h2>Weight on a slope</h2>
+        <span class="chip"><span class="dot"></span>1.4.3</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/09-inclined-plane.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 09 · 0:20</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>Nothing says the axes must be horizontal and vertical. Choose them <b>along and into the slope</b>.</li>
+            <li>Down the slope: <span class="m">W sin θ</span> — the part that accelerates it.</li>
+            <li>Into the slope: <span class="m">W cos θ</span> — the part the surface pushes back.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> Sanity-check at <span style="font-family:var(--f-mono)">θ = 0°</span>:
+            a flat surface carries the whole weight, and nothing slides.</div>
+        </div>
+      </div>
+      <div class="ghost">11</div>
+    </section>
+
+    <!-- 12 =============================================================== -->
+    <section class="slide" data-accent="amber">
+      <div class="head">
+        <span class="n">10</span><h2>Equilibrium closes the triangle</h2>
+        <span class="chip"><span class="dot"></span>4.2.3</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/10-equilibrium-triangle.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 10 · 0:20</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>Zero resultant means the last arrowhead lands on the first tail. <b>The triangle closes.</b></li>
+            <li><span class="m">ΣF<sub>x</sub> = 0</span> and <span class="m">ΣF<sub>y</sub> = 0</span> say the same thing in algebra.</li>
+            <li>The balancing force is <b>equal and opposite to the resultant</b> of the other two.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> Draw them in order, each tail on the previous tip.
+            Out of order, it will not close.</div>
+        </div>
+      </div>
+      <div class="ghost">12</div>
+    </section>
+
+    <!-- 13 =============================================================== -->
+    <section class="slide" data-accent="teal">
+      <div class="head">
+        <span class="n">11</span><h2>Crossing a river</h2>
+        <span class="chip"><span class="dot"></span>1.4 applied</span>
+      </div>
+      <div class="split">
+        <figure class="film" style="margin:0">
+          <video preload="metadata" muted playsinline controls>
+            <source src="videos/11-river-crossing.mp4" type="video/mp4">
+          </video>
+          <div class="film-bar"><span>Film 11 · 0:20</span><button class="replay" type="button">replay</button></div>
+        </figure>
+        <div>
+          <ul class="points">
+            <li>The most useful consequence of resolving: <b>perpendicular components do not interfere</b>.</li>
+            <li><span class="m">t = width / v<sub>boat</sub></span> — the current cannot delay the crossing.</li>
+            <li><span class="m">drift = v<sub>current</sub> × t</span> — it only decides where you land.</li>
+          </ul>
+          <div class="note"><b>In the exam.</b> The same independence is what makes projectile motion
+            solvable: horizontal and vertical, separately.</div>
+        </div>
+      </div>
+      <div class="ghost">13</div>
+    </section>
+
+    <!-- 14 =============================================================== -->
+    <section class="slide" data-accent="magenta">
+      <div class="head"><h2>The whole topic, in five lines</h2></div>
+      <div class="grid c2" style="margin-top:18px;">
+        <div class="card">
+          <span class="k">magnitude · perpendicular</span>
+          <p class="fx">R = √(F<span class="u">x</span>² + F<span class="u">y</span>²)</p>
+        </div>
+        <div class="card">
+          <span class="k">direction · perpendicular</span>
+          <p class="fx">θ = tan⁻¹(F<span class="u">y</span> / F<span class="u">x</span>)</p>
+        </div>
+        <div class="card">
+          <span class="k">magnitude · any angle</span>
+          <p class="fx">R² = a² + b² − 2ab <span class="u">cos C</span></p>
+        </div>
+        <div class="card">
+          <span class="k">components</span>
+          <p class="fx"><span class="u">F cos θ</span> along · <span class="u">F sin θ</span> at 90°</p>
+        </div>
+        <div class="card" style="grid-column: span 2;">
+          <span class="k">equilibrium</span>
+          <p class="fx">ΣF<span class="u">x</span> = 0 · ΣF<span class="u">y</span> = 0 — equivalently, a closed vector triangle</p>
+        </div>
+      </div>
+      <div class="ghost">14</div>
+    </section>
+
+    <!-- 15 =============================================================== -->
+    <section class="slide" data-accent="amber">
+      <div class="head"><h2>Three marks people throw away</h2></div>
+      <div class="grid c3" style="margin-top:22px;">
+        <div class="card lit">
+          <span class="k">01 · direction</span>
+          <h3>A magnitude with no direction</h3>
+          <p>Half the marks in a resultant question are for the direction, and for the reference it is
+            measured from.</p>
+        </div>
+        <div class="card lit">
+          <span class="k">02 · signs</span>
+          <h3>Δv = 0 at a bounce</h3>
+          <p>The two velocities are in opposite directions. One of them is negative, so the change is
+            <span style="font-family:var(--f-mono);color:var(--ink)">2v</span>, not zero.</p>
+        </div>
+        <div class="card lit">
+          <span class="k">03 · trigonometry</span>
+          <h3>sin and cos swapped</h3>
+          <p>Cosine belongs to the direction the angle is measured <em>from</em>. Check the limit at
+            0° before you commit.</p>
+        </div>
+      </div>
+      <div class="ghost">15</div>
+    </section>
+
+    <!-- 16 =============================================================== -->
+    <section class="slide" data-accent="blue">
+      <div class="head"><h2>Now do it yourself</h2></div>
+      <div class="split" style="align-items:start;margin-top:16px;">
+        <div>
+          <ul class="points">
+            <li><b>Three diagrams you can drag</b> — add two vectors on a grid, resolve a force, tilt a slope.</li>
+            <li><b>Ten exam-style questions</b> that mark themselves and explain every answer.</li>
+            <li>All eleven films again, with the worked examples written out.</li>
+          </ul>
+          <div class="note"><b>The lesson page.</b> Same eleven films, built for reading and practising
+            rather than presenting.</div>
+        </div>
+        <div class="grid" style="gap:18px;">
+          <div class="card lit">
+            <span class="k">try this now</span>
+            <h3>Two forces, 6.0 N and 8.0 N</h3>
+            <p>At an angle you are not told. Which resultant is impossible:
+              <span style="font-family:var(--f-mono);color:var(--ink)">2.0 N · 9.0 N · 14.0 N · 15.0 N</span>?</p>
+            <p style="color:var(--ink-3);font-size:17px;">The resultant can only lie between
+              <span style="font-family:var(--f-mono)">|8.0 − 6.0|</span> and
+              <span style="font-family:var(--f-mono)">8.0 + 6.0</span>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ghost">16</div>
+    </section>
+
+    <!-- 17 =============================================================== -->
+    <section class="slide" data-accent="magenta">
+      <div class="t-wrap">
+        <div class="eyebrow">End of topic</div>
+        <h2 style="font-size:82px;" class="grad">One triangle,<br>drawn carefully.</h2>
+        <div class="rule"></div>
+        <p class="t-sub" style="font-size:26px;">Add tip to tail. Subtract by reversing. Resolve into
+          two perpendicular parts. Everything in 1.4 and 4.2 is one of those three moves.</p>
+        <div class="t-meta" style="margin-top:26px;font-size:14px;">
+          <span>Films rendered with <b>Manim Community v0.21.0</b></span>
+          <span>Syllabus checked against <b>9702 for 2025–27</b>, outcomes 1.4.1–1.4.3 and 4.2.3</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="chrome">
+      <span class="brand">Vector analysis · 9702</span>
+      <div class="navs">
+        <button class="navbtn" type="button" id="prev" aria-label="Previous slide">←</button>
+        <span id="count">1 / 17</span>
+        <button class="navbtn" type="button" id="next" aria-label="Next slide">→</button>
+        <button class="navbtn" type="button" id="full" aria-label="Full screen" style="width:auto;padding:0 10px;">⤢</button>
+      </div>
+    </div>
+    <div id="bar"></div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var stage  = document.getElementById('stage');
+  var fit    = document.getElementById('fit');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var bar    = document.getElementById('bar');
+  var count  = document.getElementById('count');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i = 0;
+
+  /* --- scale the 1600x900 surface to the viewport ----------------------- */
+  function resize() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  /* --- slide changes ---------------------------------------------------- */
+  function videoIn(slide) { return slide ? slide.querySelector('video') : null; }
+
+  function show(n) {
+    if (n < 0) n = 0;
+    if (n > slides.length - 1) n = slides.length - 1;
+
+    var leaving = videoIn(slides[i]);
+    if (leaving) { leaving.pause(); }
+
+    i = n;
+    slides.forEach(function (s, k) { s.classList.toggle('active', k === n); });
+    count.textContent = (n + 1) + ' / ' + slides.length;
+    bar.style.width = ((n + 1) / slides.length * 100) + '%';
+
+    // The film is the point of the slide, so it starts itself — muted, which
+    // every browser permits, and these films carry no audio anyway.
+    var v = videoIn(slides[n]);
+    if (v && !reduce) {
+      try { v.currentTime = 0; } catch (e) {}
+      var p = v.play();
+      if (p && p.catch) { p.catch(function () { /* autoplay refused: controls remain */ }); }
+    }
+  }
+
+  document.getElementById('next').addEventListener('click', function () { show(i + 1); });
+  document.getElementById('prev').addEventListener('click', function () { show(i - 1); });
+  document.getElementById('full').addEventListener('click', function () {
+    if (document.fullscreenElement) { document.exitFullscreen(); }
+    else if (fit.requestFullscreen) { fit.requestFullscreen(); }
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.replay'), function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var v = videoIn(b.closest('.slide'));
+      if (!v) return;
+      try { v.currentTime = 0; } catch (err) {}
+      v.play();
+    });
+  });
+
+  // No click-to-advance: it would fight the video controls on eleven slides.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') { document.getElementById('full').click(); }
+    else if (e.key === 'r' || e.key === 'R') {
+      var v = videoIn(slides[i]);
+      if (v) { try { v.currentTime = 0; } catch (err) {} v.play(); }
+    }
+  });
+
+  // Swipe, for a phone held sideways.
+  var x0 = null;
+  stage.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 60) { show(dx < 0 ? i + 1 : i - 1); }
+    x0 = null;
+  }, { passive: true });
+
+  show(0);
+})();
+</script>
+</body>
+</html>

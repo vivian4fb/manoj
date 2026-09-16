@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Eleven short films and eleven worked lessons on vectors for Cambridge International AS &amp; A Level Physics 9702, sections 1.4 and 4.2.3.">
+<meta name="theme-color" content="#F4F6F9">
+<meta property="og:title" content="Vector Analysis for 9702 - the lesson">
+<meta property="og:description" content="Eleven short films and eleven worked lessons on vectors for Cambridge International AS &amp; A Level Physics 9702, sections 1.4 and 4.2.3.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Vector Analysis for 9702</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+/* ---------------------------------------------------------------------------
+   Vector Analysis for 9702
+   Type: IBM Plex Sans Condensed (headings, exam-paper compression)
+         IBM Plex Serif (body, textbook reading)
+         IBM Plex Mono (every number, unit and answer)
+   Colour: the four vector slots carry the SAME hues as the films, so an arrow
+   on the page and an arrow on screen mean the same thing.
+--------------------------------------------------------------------------- */
+
+:root {
+  --paper:      #F4F6F9;
+  --panel:      #FFFFFF;
+  --ink:        #111925;
+  --ink-2:      #33415A;
+  --muted:      #5C6B80;
+  --rule:       #D2DAE5;
+  --rule-soft:  rgba(17, 25, 37, 0.055);
+  --film-bg:    #0E1522;
+
+  --vec-a:      #1F63CE;
+  --vec-b:      #A96500;
+  --vec-r:      #C0166B;
+  --vec-c:      #0B7A6E;
+  --good:       #0F7A52;
+  --bad:        #B3271E;
+
+  --shadow:     0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px rgba(16, 24, 40, .05);
+
+  --f-display:  "IBM Plex Sans Condensed", "Segoe UI", system-ui, sans-serif;
+  --f-body:     "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --f-mono:     "IBM Plex Mono", Consolas, ui-monospace, monospace;
+
+  --measure:    66ch;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:     #0A0F19;
+    --panel:     #121A28;
+    --ink:       #E9EFF8;
+    --ink-2:     #C2CEDF;
+    --muted:     #8B99B0;
+    --rule:      #26323F;
+    --rule-soft: rgba(233, 239, 248, 0.05);
+    --film-bg:   #0E1522;
+
+    --vec-a:     #6BAAFF;
+    --vec-b:     #FFB020;
+    --vec-r:     #FF72B3;
+    --vec-c:     #35D3C4;
+    --good:      #5BD6A0;
+    --bad:       #FF7B72;
+
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:     #0A0F19;
+  --panel:     #121A28;
+  --ink:       #E9EFF8;
+  --ink-2:     #C2CEDF;
+  --muted:     #8B99B0;
+  --rule:      #26323F;
+  --rule-soft: rgba(233, 239, 248, 0.05);
+  --film-bg:   #0E1522;
+
+  --vec-a:     #6BAAFF;
+  --vec-b:     #FFB020;
+  --vec-r:     #FF72B3;
+  --vec-c:     #35D3C4;
+  --good:      #5BD6A0;
+  --bad:       #FF7B72;
+
+  --shadow:    0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding-inline: 20px;
+  padding-block: 0 64px;
+  background-color: var(--paper);
+  /* Squared paper: the convention every scale drawing in this topic is made on. */
+  background-image:
+    linear-gradient(var(--rule-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3, h4 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.18; }
+p { margin: 0 0 0.9em; }
+a { color: var(--vec-a); }
+
+.mono, code { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- shell ---------- */
+.shell {
+  max-width: 1180px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 34px;
+}
+@media (min-width: 960px) {
+  .shell { grid-template-columns: 218px minmax(0, 1fr); gap: 48px; align-items: start; }
+}
+
+/* ---------- masthead ---------- */
+.masthead { padding-block: 44px 30px; border-bottom: 2px solid var(--ink); margin-bottom: 34px; }
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+}
+.masthead h1 { font-size: clamp(34px, 6.2vw, 56px); font-weight: 700; letter-spacing: -0.015em; }
+.masthead .standfirst {
+  font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-2);
+  max-width: 54ch; margin-top: 14px;
+}
+.facts {
+  display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 22px;
+  font-family: var(--f-mono); font-size: 13px; color: var(--muted);
+}
+.facts b { color: var(--ink); font-weight: 500; }
+
+/* ---------- contents rail ---------- */
+.rail { position: sticky; top: 0; z-index: 5; }
+@media (min-width: 960px) { .rail { top: 24px; padding-top: 48px; } }
+.rail h2 {
+  font-size: 12px; font-family: var(--f-mono); font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 12px;
+}
+.rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.rail a {
+  display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: baseline;
+  padding: 5px 8px 5px 4px; border-radius: 4px;
+  font-family: var(--f-display); font-size: 14.5px; line-height: 1.3;
+  color: var(--ink-2); text-decoration: none; border-left: 2px solid transparent;
+}
+.rail a .n { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.rail a:hover { background: var(--rule-soft); color: var(--ink); }
+.rail a.on { border-left-color: var(--vec-r); color: var(--ink); font-weight: 600; }
+.rail a.on .n { color: var(--vec-r); }
+
+/* Small screens: the rail becomes a scrolling strip of numbers. */
+@media (max-width: 959px) {
+  .rail {
+    background: var(--paper); border-bottom: 1px solid var(--rule);
+    margin-inline: -20px; padding: 8px 20px 9px;
+  }
+  .rail h2 { display: none; }
+  .rail ol { flex-direction: row; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+  .rail a {
+    grid-template-columns: auto; border: 1px solid var(--rule); border-left-width: 1px;
+    border-radius: 999px; padding: 4px 11px; white-space: nowrap; font-size: 13px;
+  }
+  .rail a .t { display: none; }
+  .rail a .n { color: var(--ink-2); font-size: 13px; }
+  .rail a.on { background: var(--vec-r); border-color: var(--vec-r); }
+  .rail a.on .n { color: #fff; }
+}
+
+/* ---------- lessons ---------- */
+.lesson { padding-block: 30px 44px; border-top: 1px solid var(--rule); }
+.lesson:first-of-type { border-top: 0; padding-top: 6px; }
+.lesson-head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; margin-bottom: 16px; }
+.lnum {
+  font-family: var(--f-mono); font-size: 13px; font-weight: 600;
+  color: var(--vec-r); padding-top: 6px; letter-spacing: .02em;
+}
+.lesson h2 { font-size: clamp(23px, 3.4vw, 31px); font-weight: 600; letter-spacing: -0.01em; }
+.syl {
+  font-family: var(--f-mono); font-size: 12.5px; color: var(--muted);
+  margin: 6px 0 0; line-height: 1.45;
+}
+.lead { max-width: var(--measure); color: var(--ink-2); }
+.lesson p, .lesson ul, .lesson ol { max-width: var(--measure); }
+
+/* ---------- film ---------- */
+.film { margin: 22px 0 20px; max-width: 760px; }
+.film video {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
+  background: var(--film-bg); border-radius: 6px 6px 0 0; border: 1px solid var(--rule);
+  border-bottom: 0;
+}
+.film figcaption {
+  display: flex; gap: 14px; align-items: baseline; justify-content: space-between;
+  border: 1px solid var(--rule); border-radius: 0 0 6px 6px;
+  padding: 9px 13px; background: var(--panel);
+  font-size: 14.5px; color: var(--muted); line-height: 1.45;
+}
+.film .dur { font-family: var(--f-mono); font-size: 12px; white-space: nowrap; }
+
+/* ---------- key points ---------- */
+.keys { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-direction: column; gap: 7px; }
+.keys li { padding-left: 20px; position: relative; }
+.keys li::before {
+  content: ""; position: absolute; left: 0; top: 0.62em;
+  width: 9px; height: 2px; background: var(--vec-c);
+}
+
+/* ---------- callouts ---------- */
+.watch {
+  border-left: 3px solid var(--bad); padding: 2px 0 2px 14px;
+  font-size: 15.5px; color: var(--ink-2); max-width: var(--measure);
+}
+.watch b { font-family: var(--f-display); color: var(--bad); font-weight: 600; }
+
+details.worked {
+  border: 1px solid var(--rule); border-radius: 6px; background: var(--panel);
+  padding: 0 16px; margin: 20px 0; max-width: var(--measure); box-shadow: var(--shadow);
+}
+details.worked > summary {
+  cursor: pointer; padding: 13px 0; font-family: var(--f-display);
+  font-weight: 600; font-size: 16px; list-style-position: inside;
+}
+details.worked > summary::marker { color: var(--vec-r); }
+details.worked[open] > summary { border-bottom: 1px solid var(--rule); margin-bottom: 12px; }
+details.worked .q { color: var(--ink-2); }
+details.worked .marks { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); }
+.sol { font-size: 16px; }
+.sol .step { font-family: var(--f-mono); font-size: 14.5px; margin: 0 0 6px; color: var(--ink); }
+.sol .ans { font-family: var(--f-mono); font-weight: 600; color: var(--good); }
+details.worked > *:last-child { margin-bottom: 14px; }
+
+/* ---------- tools ---------- */
+.tool {
+  border: 1px solid var(--rule); border-radius: 8px; background: var(--panel);
+  padding: 16px; margin: 22px 0; box-shadow: var(--shadow); max-width: 760px;
+}
+.tool-head {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+}
+.tool-head h3 { font-size: 16px; font-weight: 600; }
+.tool-head .hint { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.tool svg { display: block; width: 100%; height: auto; max-width: 100%; touch-action: none; }
+.readout { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 12px; }
+.cell {
+  border: 1px solid var(--rule); border-radius: 5px; padding: 7px 11px;
+  min-width: 116px; flex: 1 1 116px;
+}
+.cell .k {
+  display: block; font-family: var(--f-mono); font-size: 11px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+}
+.cell .v { font-family: var(--f-mono); font-size: 18px; font-variant-numeric: tabular-nums; font-weight: 500; }
+.cell.a .v { color: var(--vec-a); } .cell.b .v { color: var(--vec-b); }
+.cell.r .v { color: var(--vec-r); } .cell.c .v { color: var(--vec-c); }
+
+.controls { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.ctl { display: grid; grid-template-columns: minmax(78px, auto) 1fr minmax(72px, auto); gap: 12px; align-items: center; }
+.ctl label { font-family: var(--f-display); font-size: 14.5px; }
+.ctl output { font-family: var(--f-mono); font-size: 14.5px; text-align: right; font-variant-numeric: tabular-nums; }
+input[type="range"] { width: 100%; accent-color: var(--vec-r); }
+
+button {
+  font-family: var(--f-display); font-size: 14.5px; font-weight: 600;
+  padding: 8px 15px; border-radius: 5px; border: 1px solid var(--rule);
+  background: var(--panel); color: var(--ink); cursor: pointer;
+}
+button:hover { border-color: var(--ink-2); }
+button.primary { background: var(--vec-r); border-color: var(--vec-r); color: #fff; }
+button.primary:hover { filter: brightness(1.07); }
+:focus-visible { outline: 2px solid var(--vec-r); outline-offset: 2px; }
+
+/* ---------- quiz ---------- */
+.quiz { border-top: 2px solid var(--ink); padding-top: 30px; }
+.q-item { padding: 18px 0; border-bottom: 1px solid var(--rule); max-width: var(--measure); }
+.q-item .stem { font-weight: 500; margin-bottom: 10px; }
+.q-item .stem .qn { font-family: var(--f-mono); color: var(--vec-r); font-size: 14px; margin-right: 8px; }
+.opts { display: flex; flex-direction: column; gap: 5px; }
+.opts label {
+  display: flex; gap: 9px; align-items: baseline; padding: 5px 9px;
+  border: 1px solid transparent; border-radius: 5px; cursor: pointer; font-size: 16px;
+}
+.opts label:hover { background: var(--rule-soft); }
+.opts input { margin: 0; accent-color: var(--vec-r); }
+.numeric { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
+.numeric input[type="text"] {
+  font-family: var(--f-mono); font-size: 16px; width: 130px; padding: 7px 10px;
+  border: 1px solid var(--rule); border-radius: 5px; background: var(--paper); color: var(--ink);
+}
+.numeric .unit { font-family: var(--f-mono); font-size: 14px; color: var(--muted); }
+.verdict { margin-top: 9px; font-size: 15px; display: none; }
+.verdict.show { display: block; }
+.verdict .tag { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.verdict.right .tag { color: var(--good); }
+.verdict.wrong .tag { color: var(--bad); }
+.verdict .why { color: var(--ink-2); }
+.score {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin-top: 22px; padding: 14px 16px; border: 1px solid var(--rule);
+  border-radius: 6px; background: var(--panel);
+}
+.score .n { font-family: var(--f-mono); font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.score .lab { font-size: 15px; color: var(--muted); }
+
+/* ---------- summary table ---------- */
+.tablewrap { overflow-x: auto; margin: 18px 0 26px; }
+table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 15.5px; }
+caption { text-align: left; font-family: var(--f-mono); font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--f-display); font-size: 13px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td.f { font-family: var(--f-mono); font-size: 14.5px; white-space: nowrap; }
+
+/* ---------- footer ---------- */
+footer {
+  margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--rule);
+  font-size: 14px; color: var(--muted); max-width: var(--measure);
+}
+footer .prov { font-family: var(--f-mono); font-size: 12.5px; line-height: 1.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="rail" aria-label="Contents">
+    <h2>The eleven films</h2>
+    <ol id="toc">
+      <li><a href="index.html" id="home-link"><span class="n">&#8962;</span><span class="t">Course home</span></a></li>
+      <li><a href="#l1"  class="on"><span class="n">01</span><span class="t">Scalar or vector?</span></a></li>
+      <li><a href="#l2"><span class="n">02</span><span class="t">Drawing a vector</span></a></li>
+      <li><a href="#l3"><span class="n">03</span><span class="t">Adding tip to tail</span></a></li>
+      <li><a href="#l4"><span class="n">04</span><span class="t">At right angles</span></a></li>
+      <li><a href="#l5"><span class="n">05</span><span class="t">Not at right angles</span></a></li>
+      <li><a href="#l6"><span class="n">06</span><span class="t">Subtracting</span></a></li>
+      <li><a href="#l7"><span class="n">07</span><span class="t">Change in velocity</span></a></li>
+      <li><a href="#l8"><span class="n">08</span><span class="t">Resolving</span></a></li>
+      <li><a href="#l9"><span class="n">09</span><span class="t">Weight on a slope</span></a></li>
+      <li><a href="#l10"><span class="n">10</span><span class="t">Equilibrium triangle</span></a></li>
+      <li><a href="#l11"><span class="n">11</span><span class="t">Crossing a river</span></a></li>
+      <li><a href="#quiz"><span class="n">Q</span><span class="t">Check yourself</span></a></li>
+      <li><a href="#sheet"><span class="n">S</span><span class="t">Summary sheet</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="masthead">
+      <div class="eyebrow">Cambridge International AS &amp; A Level Physics 9702</div>
+      <h1>Vector analysis</h1>
+      <p class="standfirst">
+        Everything the syllabus asks of you on scalars and vectors — adding, subtracting and
+        resolving — in eleven short films, three diagrams you can drag, and ten questions that
+        mark themselves.
+      </p>
+      <div class="facts">
+        <span><b>11</b> films · <b>3 min 43 s</b> total</span>
+        <span>Syllabus <b>1.4</b> and <b>4.2</b></span>
+        <span><b>10</b> self-marking questions</span>
+      </div>
+    </header>
+
+    <!-- ================= 1 ================= -->
+    <section class="lesson" id="l1">
+      <div class="lesson-head">
+        <span class="lnum">01</span>
+        <div>
+          <h2>Scalar or vector?</h2>
+          <p class="syl">1.4.1 — understand the difference between scalar and vector quantities and give examples</p>
+        </div>
+      </div>
+      <p class="lead">
+        A scalar is completely stated by a number and a unit. A vector is not stated at all until you
+        give a direction as well — and that direction changes the arithmetic. Two 5 N forces can give
+        a resultant of 10 N, of 0 N, or of anything in between.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/01-scalars-and-vectors.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/01-scalars-and-vectors.mp4</code>.
+        </video>
+        <figcaption>
+          <span>The two lists side by side, then the test that separates them: reverse it and see whether anything changed.</span>
+          <span class="dur">0:20</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li><b>Scalars:</b> distance, speed, mass, time, energy, work, power, temperature, density, pressure, potential difference.</li>
+        <li><b>Vectors:</b> displacement, velocity, acceleration, force, weight, momentum, electric field strength, gravitational field strength.</li>
+        <li>Each vector has a scalar partner that throws the direction away: displacement → distance, velocity → speed.</li>
+      </ul>
+
+      <p class="watch">
+        <b>Common error.</b> Calling speed a vector. A car driving once round a 400 m track has travelled
+        a <em>distance</em> of 400 m but its <em>displacement</em> is zero — it finished where it started.
+        Its average speed is not zero; its average velocity is.
+      </p>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[2]</span></summary>
+        <p class="q">State whether each quantity is a scalar or a vector: (a) work done, (b) momentum,
+          (c) temperature, (d) weight.</p>
+        <div class="sol">
+          <p class="step">(a) work done — <span class="ans">scalar</span></p>
+          <p class="step">(b) momentum — <span class="ans">vector</span> (it is mass × velocity)</p>
+          <p class="step">(c) temperature — <span class="ans">scalar</span></p>
+          <p class="step">(d) weight — <span class="ans">vector</span> (a force, acting downwards)</p>
+          <p>The give-away for (b) and (d): each is built from another vector. Multiplying a vector by a
+            scalar leaves a vector.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 2 ================= -->
+    <section class="lesson" id="l2">
+      <div class="lesson-head">
+        <span class="lnum">02</span>
+        <div>
+          <h2>Drawing a vector</h2>
+          <p class="syl">1.4 — the scale-drawing convention behind every vector question</p>
+        </div>
+      </div>
+      <p class="lead">
+        On paper a vector is an arrow. Its length is the magnitude, read against a scale you must
+        state; its arrowhead is the direction, measured from a reference you must also state. An angle
+        given with no reference earns nothing.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/02-representing-vectors.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/02-representing-vectors.mp4</code>.
+        </video>
+        <figcaption>
+          <span>One 8.0 N force drawn to a stated scale, its angle marked from the horizontal, and the same force at half the length.</span>
+          <span class="dur">0:19</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li>Write the vector as <span class="mono">F&#8407;</span>, <b>F</b> or <span class="mono">F</span> underlined; its magnitude alone as <span class="mono">|F&#8407;|</span> or plain <span class="mono">F</span>.</li>
+        <li>State the scale on any scale drawing: <span class="mono">1 cm ≡ 2.0 N</span>.</li>
+        <li>State the direction one of three ways: an angle to a named line (<span class="mono">35° above the horizontal</span>), a compass form (<span class="mono">N 30° E</span>), or a three-figure bearing (<span class="mono">072°</span>).</li>
+      </ul>
+
+      <p class="watch">
+        <b>Common error.</b> Writing “the resultant is 8.0 N” and stopping. Half the marks in a resultant
+        question are for the direction.
+      </p>
+    </section>
+
+    <!-- ================= 3 ================= -->
+    <section class="lesson" id="l3">
+      <div class="lesson-head">
+        <span class="lnum">03</span>
+        <div>
+          <h2>Adding vectors tip to tail</h2>
+          <p class="syl">1.4.2 — add and subtract coplanar vectors</p>
+        </div>
+      </div>
+      <p class="lead">
+        Slide the second vector, without turning it, until its tail sits on the tip of the first. The
+        resultant is the single arrow from the first tail to the last tip. The order makes no
+        difference — draw it both ways and you have the parallelogram.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/03-tip-to-tail.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/03-tip-to-tail.mp4</code>.
+        </video>
+        <figcaption>
+          <span>Two vectors on a 1 N grid, slid tip to tail, closed by the resultant — then in the other order, onto the same point.</span>
+          <span class="dur">0:20</span>
+        </figcaption>
+      </figure>
+
+      <div class="tool">
+        <div class="tool-head">
+          <h3>Drag the two vectors</h3>
+          <span class="hint">drag a tip, or select one and use the arrow keys · 1 square ≡ 1.0 N</span>
+        </div>
+        <svg id="add-svg" viewBox="0 0 520 340" role="img"
+             aria-label="Two draggable vectors on a grid with their resultant">
+          <defs>
+            <marker id="h-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-a)"></path>
+            </marker>
+            <marker id="h-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-b)"></path>
+            </marker>
+            <marker id="h-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-r)"></path>
+            </marker>
+          </defs>
+          <g id="add-grid"></g>
+          <polygon id="add-para" fill="var(--vec-r)" fill-opacity="0.07" stroke="var(--rule)" stroke-width="1"></polygon>
+          <line id="add-a"  stroke="var(--vec-a)" stroke-width="3.5" marker-end="url(#h-a)"></line>
+          <line id="add-b2" stroke="var(--vec-b)" stroke-width="3.5" marker-end="url(#h-b)"></line>
+          <line id="add-b"  stroke="var(--vec-b)" stroke-width="2"   stroke-dasharray="5 4" opacity="0.5"></line>
+          <line id="add-r"  stroke="var(--vec-r)" stroke-width="4"   marker-end="url(#h-r)"></line>
+          <circle id="add-ha" r="9" fill="var(--vec-a)" fill-opacity="0.22" stroke="var(--vec-a)" stroke-width="2"
+                  tabindex="0" role="slider" aria-label="Tip of vector a" style="cursor:grab"></circle>
+          <circle id="add-hb" r="9" fill="var(--vec-b)" fill-opacity="0.22" stroke="var(--vec-b)" stroke-width="2"
+                  tabindex="0" role="slider" aria-label="Tip of vector b" style="cursor:grab"></circle>
+          <text id="add-la" font-size="15" font-weight="600" fill="var(--vec-a)" font-family="IBM Plex Mono, monospace">a</text>
+          <text id="add-lb" font-size="15" font-weight="600" fill="var(--vec-b)" font-family="IBM Plex Mono, monospace">b</text>
+          <text id="add-lr" font-size="15" font-weight="600" fill="var(--vec-r)" font-family="IBM Plex Mono, monospace">a + b</text>
+        </svg>
+        <div class="readout">
+          <div class="cell a"><span class="k">vector a</span><span class="v" id="out-a">—</span></div>
+          <div class="cell b"><span class="k">vector b</span><span class="v" id="out-b">—</span></div>
+          <div class="cell r"><span class="k">resultant</span><span class="v" id="out-r">—</span></div>
+          <div class="cell r"><span class="k">direction</span><span class="v" id="out-th">—</span></div>
+        </div>
+        <div class="controls" style="flex-direction:row; gap:10px; flex-wrap:wrap;">
+          <button type="button" id="add-reset">Reset</button>
+          <button type="button" id="add-perp">Make them perpendicular</button>
+        </div>
+      </div>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[3]</span></summary>
+        <p class="q">A walker goes 40 m due east, then 30 m due north. Find the magnitude and direction
+          of the resultant displacement.</p>
+        <div class="sol">
+          <p class="step">R = √(40² + 30²) = √2500 = <span class="ans">50 m</span></p>
+          <p class="step">θ = tan⁻¹(30 / 40) = 36.9° east of north… <em>careful</em> — measure from the stated reference:</p>
+          <p class="step">θ = tan⁻¹(30 / 40) = 36.9° north of east, so the bearing is 090° − 36.9° = <span class="ans">053°</span></p>
+          <p>Note the distance walked is 70 m but the displacement is 50 m. Different quantities, different answers.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 4 ================= -->
+    <section class="lesson" id="l4">
+      <div class="lesson-head">
+        <span class="lnum">04</span>
+        <div>
+          <h2>Two vectors at right angles</h2>
+          <p class="syl">1.4.2 — the case the exam asks for most often</p>
+        </div>
+      </div>
+      <p class="lead">
+        When the two vectors are perpendicular the triangle is right-angled, so you need no drawing
+        instruments at all: Pythagoras gives the magnitude and the inverse tangent gives the direction.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/04-perpendicular-resultant.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/04-perpendicular-resultant.mp4</code>.
+        </video>
+        <figcaption>
+          <span>3.0 N east and 4.0 N north, closed into the 3–4–5 triangle, with the angle converted to a bearing.</span>
+          <span class="dur">0:22</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li><span class="mono">R = √(F<sub>x</sub>² + F<sub>y</sub>²)</span></li>
+        <li><span class="mono">θ = tan⁻¹(F<sub>y</sub> / F<sub>x</sub>)</span>, measured from the <span class="mono">F<sub>x</sub></span> direction.</li>
+        <li>Learn to recognise 3–4–5 and 5–12–13: examiners use them so the arithmetic is not the point.</li>
+      </ul>
+
+      <p class="watch">
+        <b>Common error.</b> Quoting the angle without saying what it is measured from. “53°” is not an
+        answer; “53° above the horizontal”, or “bearing 037°”, is.
+      </p>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[4]</span></summary>
+        <p class="q">A ball is kicked with a horizontal velocity component of 12 m s⁻¹ and a vertical
+          component of 9.0 m s⁻¹. Find its initial velocity.</p>
+        <div class="sol">
+          <p class="step">v = √(12² + 9.0²) = √225 = <span class="ans">15 m s⁻¹</span></p>
+          <p class="step">θ = tan⁻¹(9.0 / 12) = <span class="ans">37° above the horizontal</span></p>
+          <p>Quote both parts, and to the same number of significant figures as the data (2 s.f. here).</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 5 ================= -->
+    <section class="lesson" id="l5">
+      <div class="lesson-head">
+        <span class="lnum">05</span>
+        <div>
+          <h2>When they are not at right angles</h2>
+          <p class="syl">1.4.2 — by scale drawing, or by the cosine and sine rules</p>
+        </div>
+      </div>
+      <p class="lead">
+        The triangle is the same; only the trigonometry is harder. Cambridge accepts either route — a
+        careful scale drawing with a stated scale, or the cosine rule followed by the sine rule.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/05-non-perpendicular-resultant.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/05-non-perpendicular-resultant.mp4</code>.
+        </video>
+        <figcaption>
+          <span>5.0 N and 7.0 N at 50°, slid tip to tail — where the 130° interior angle comes from, then the cosine rule.</span>
+          <span class="dur">0:21</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li><span class="mono">R² = a² + b² − 2ab cos C</span>, where <span class="mono">C</span> is the <em>interior</em> angle of the tip-to-tail triangle.</li>
+        <li>If the angle <em>between</em> the two vectors drawn from a point is <span class="mono">φ</span>, then <span class="mono">C = 180° − φ</span>.</li>
+        <li>Then <span class="mono">sin α / b = sin C / R</span> for the direction.</li>
+        <li>A resultant of two vectors can never be larger than their sum, nor smaller than their difference.</li>
+      </ul>
+
+      <p class="watch">
+        <b>Common error.</b> Feeding the 50° between the arrows straight into the cosine rule. The
+        triangle's interior angle is 130°, and <span class="mono">cos 130°</span> is negative — which is
+        exactly why the resultant comes out larger than either force.
+      </p>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[5]</span></summary>
+        <p class="q">Two forces, 5.0 N and 7.0 N, act at a point with 50° between them. Find the resultant.</p>
+        <div class="sol">
+          <p class="step">C = 180° − 50° = 130°</p>
+          <p class="step">R² = 5.0² + 7.0² − 2(5.0)(7.0) cos 130° = 25 + 49 + 45.0 = 119.0</p>
+          <p class="step">R = <span class="ans">10.9 N</span></p>
+          <p class="step">sin α / 7.0 = sin 130° / 10.9 → sin α = 0.492</p>
+          <p class="step">α = <span class="ans">29.4° from the 5.0 N force</span></p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 6 ================= -->
+    <section class="lesson" id="l6">
+      <div class="lesson-head">
+        <span class="lnum">06</span>
+        <div>
+          <h2>Subtracting: reverse, then add</h2>
+          <p class="syl">1.4.2 — add and <em>subtract</em> coplanar vectors</p>
+        </div>
+      </div>
+      <p class="lead">
+        There is no separate rule for subtraction. To find <span class="mono">a − b</span>, reverse
+        <span class="mono">b</span> to get <span class="mono">−b</span> — same length, opposite arrowhead —
+        and then add it tip to tail exactly as before.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/06-vector-subtraction.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/06-vector-subtraction.mp4</code>.
+        </video>
+        <figcaption>
+          <span>b flipped into −b, slid to the tip of a, and the difference closed off and measured.</span>
+          <span class="dur">0:21</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li><span class="mono">a − b = a + (−b)</span>.</li>
+        <li>Reversing a vector changes only its direction, never its magnitude.</li>
+        <li>Order matters here: <span class="mono">b − a</span> is the same length as <span class="mono">a − b</span> but points the opposite way.</li>
+      </ul>
+    </section>
+
+    <!-- ================= 7 ================= -->
+    <section class="lesson" id="l7">
+      <div class="lesson-head">
+        <span class="lnum">07</span>
+        <div>
+          <h2>Change in velocity at a bounce</h2>
+          <p class="syl">1.4.2 applied — and the setup behind most momentum questions (3.3)</p>
+        </div>
+      </div>
+      <p class="lead">
+        <span class="mono">Δv = v<sub>final</sub> − v<sub>initial</sub></span> is a vector subtraction, and
+        a ball bouncing straight back off a wall is where most marks are lost. Its speed has not changed
+        at all; its velocity has changed by twice the speed.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/07-change-in-velocity.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/07-change-in-velocity.mp4</code>.
+        </video>
+        <figcaption>
+          <span>A ball in, a ball out, and the signed arithmetic that turns two 5.0 m s⁻¹ speeds into a 10 m s⁻¹ change.</span>
+          <span class="dur">0:20</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li>Choose a positive direction and state it. Everything after that is signs.</li>
+        <li>Straight-back bounce at unchanged speed: <span class="mono">|Δv| = 2v</span> and <span class="mono">|Δp| = 2mv</span>.</li>
+        <li>Striking a wall at an angle: only the component perpendicular to the wall reverses; the parallel component is unchanged.</li>
+      </ul>
+
+      <p class="watch">
+        <b>Common error.</b> Writing <span class="mono">Δv = 5.0 − 5.0 = 0</span>. The two velocities are in
+        opposite directions, so one of them is negative: <span class="mono">(−5.0) − (+5.0) = −10 m s⁻¹</span>.
+      </p>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[3]</span></summary>
+        <p class="q">A ball of mass 0.20 kg hits a wall horizontally at 5.0 m s⁻¹ and rebounds along the
+          same line at 5.0 m s⁻¹. Find the magnitude of the change in momentum.</p>
+        <div class="sol">
+          <p class="step">Take “towards the wall” as positive.</p>
+          <p class="step">Δv = (−5.0) − (+5.0) = −10 m s⁻¹</p>
+          <p class="step">Δp = m Δv = 0.20 × (−10) = −2.0 kg m s⁻¹</p>
+          <p class="step">magnitude = <span class="ans">2.0 kg m s⁻¹</span>, directed away from the wall</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 8 ================= -->
+    <section class="lesson" id="l8">
+      <div class="lesson-head">
+        <span class="lnum">08</span>
+        <div>
+          <h2>Resolving into two perpendicular components</h2>
+          <p class="syl">1.4.3 — represent a vector as two perpendicular components</p>
+        </div>
+      </div>
+      <p class="lead">
+        Addition run backwards. Any vector can be replaced, completely and without loss, by two
+        perpendicular vectors that add to give it. The component <em>along</em> a chosen direction uses
+        the cosine of the angle to that direction; the one at right angles to it uses the sine.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/08-resolving-components.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/08-resolving-components.mp4</code>.
+        </video>
+        <figcaption>
+          <span>A 50 N rope at 30° split into the part that drags the box along and the part that lifts it.</span>
+          <span class="dur">0:19</span>
+        </figcaption>
+      </figure>
+
+      <div class="tool">
+        <div class="tool-head">
+          <h3>Resolve a force</h3>
+          <span class="hint">move the sliders and watch which component takes the strain</span>
+        </div>
+        <svg id="res-svg" viewBox="0 0 520 300" role="img" aria-label="A force resolved into horizontal and vertical components">
+          <defs>
+            <marker id="h-f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-a)"></path>
+            </marker>
+            <marker id="h-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-c)"></path>
+            </marker>
+          </defs>
+          <line id="res-base" stroke="var(--rule)" stroke-width="2"></line>
+          <path  id="res-arc"  fill="none" stroke="var(--muted)" stroke-width="1.5"></path>
+          <text  id="res-ang"  font-size="13" fill="var(--muted)" font-family="IBM Plex Mono, monospace"></text>
+          <line id="res-gx" stroke="var(--rule)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+          <line id="res-x"  stroke="var(--vec-c)" stroke-width="3.5" marker-end="url(#h-c)"></line>
+          <line id="res-y"  stroke="var(--vec-c)" stroke-width="3.5" marker-end="url(#h-c)"></line>
+          <line id="res-f"  stroke="var(--vec-a)" stroke-width="4"   marker-end="url(#h-f)"></line>
+          <text id="res-lf" font-size="14" font-weight="600" fill="var(--vec-a)" font-family="IBM Plex Mono, monospace"></text>
+          <text id="res-lx" font-size="13" fill="var(--vec-c)" font-family="IBM Plex Mono, monospace"></text>
+          <text id="res-ly" font-size="13" fill="var(--vec-c)" font-family="IBM Plex Mono, monospace"></text>
+        </svg>
+        <div class="controls">
+          <div class="ctl">
+            <label for="res-F">Force</label>
+            <input type="range" id="res-F" min="10" max="100" step="1" value="50">
+            <output id="res-Fo">50 N</output>
+          </div>
+          <div class="ctl">
+            <label for="res-T">Angle</label>
+            <input type="range" id="res-T" min="0" max="90" step="1" value="30">
+            <output id="res-To">30°</output>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="cell c"><span class="k">F cos θ · along</span><span class="v" id="res-ox">—</span></div>
+          <div class="cell c"><span class="k">F sin θ · at 90°</span><span class="v" id="res-oy">—</span></div>
+          <div class="cell a"><span class="k">check √(x²+y²)</span><span class="v" id="res-ock">—</span></div>
+        </div>
+      </div>
+
+      <p class="watch">
+        <b>Common error.</b> Reaching for cosine automatically. Neither function belongs to “horizontal”
+        or “vertical” — cosine belongs to the direction the angle is measured <em>from</em>. Check by
+        letting θ → 0: the along-component should become the whole force.
+      </p>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[4]</span></summary>
+        <p class="q">A box is pulled along level ground by a rope at 30° to the horizontal with a force
+          of 50 N. Find the horizontal and vertical components.</p>
+        <div class="sol">
+          <p class="step">F<sub>x</sub> = 50 cos 30° = <span class="ans">43.3 N</span> (drags the box forward)</p>
+          <p class="step">F<sub>y</sub> = 50 sin 30° = <span class="ans">25.0 N</span> (lifts it, reducing the normal contact force)</p>
+          <p>Because of that 25.0 N, the normal contact force is <em>less</em> than the weight — which is
+            why friction falls when you pull at an angle rather than pushing down.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 9 ================= -->
+    <section class="lesson" id="l9">
+      <div class="lesson-head">
+        <span class="lnum">09</span>
+        <div>
+          <h2>Weight on a slope</h2>
+          <p class="syl">1.4.3 applied — choosing axes that make the problem easy</p>
+        </div>
+      </div>
+      <p class="lead">
+        Nothing says the two perpendicular directions must be horizontal and vertical. On a slope,
+        choose them <em>along</em> the surface and <em>perpendicular</em> to it, and the weight splits
+        into the part that accelerates the object down the slope and the part the surface has to push back.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/09-inclined-plane.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/09-inclined-plane.mp4</code>.
+        </video>
+        <figcaption>
+          <span>A 40 N weight on a 25° slope, resolved along and into the surface rather than down and across.</span>
+          <span class="dur">0:20</span>
+        </figcaption>
+      </figure>
+
+      <div class="tool">
+        <div class="tool-head">
+          <h3>Tilt the slope</h3>
+          <span class="hint">watch the two components trade places as the angle grows</span>
+        </div>
+        <svg id="slp-svg" viewBox="0 0 520 300" role="img" aria-label="Weight on a slope resolved into components along and perpendicular to the surface">
+          <defs>
+            <marker id="h-w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-a)"></path>
+            </marker>
+            <marker id="h-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-c)"></path>
+            </marker>
+            <marker id="h-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--vec-b)"></path>
+            </marker>
+          </defs>
+          <polygon id="slp-wedge" fill="var(--rule-soft)" stroke="var(--rule)" stroke-width="2"></polygon>
+          <path id="slp-arc" fill="none" stroke="var(--muted)" stroke-width="1.5"></path>
+          <text id="slp-ang" font-size="13" fill="var(--muted)" font-family="IBM Plex Mono, monospace"></text>
+          <rect id="slp-block" width="34" height="22" fill="var(--panel)" stroke="var(--ink-2)" stroke-width="2"></rect>
+          <line id="slp-par" stroke="var(--vec-c)" stroke-width="3.5" marker-end="url(#h-p)"></line>
+          <line id="slp-perp" stroke="var(--vec-b)" stroke-width="3.5" marker-end="url(#h-n)"></line>
+          <line id="slp-w" stroke="var(--vec-a)" stroke-width="4" marker-end="url(#h-w)"></line>
+          <text id="slp-lw" font-size="13" font-weight="600" fill="var(--vec-a)" font-family="IBM Plex Mono, monospace"></text>
+        </svg>
+        <div class="controls">
+          <div class="ctl">
+            <label for="slp-T">Slope angle</label>
+            <input type="range" id="slp-T" min="0" max="45" step="1" value="25">
+            <output id="slp-To">25°</output>
+          </div>
+          <div class="ctl">
+            <label for="slp-W">Weight</label>
+            <input type="range" id="slp-W" min="10" max="100" step="1" value="40">
+            <output id="slp-Wo">40 N</output>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="cell c"><span class="k">W sin θ · down slope</span><span class="v" id="slp-opar">—</span></div>
+          <div class="cell b"><span class="k">W cos θ · into slope</span><span class="v" id="slp-operp">—</span></div>
+        </div>
+      </div>
+
+      <p class="watch">
+        <b>Common error.</b> Swapping sine and cosine. Test it at θ = 0°: a flat surface should carry the
+        whole weight (<span class="mono">W cos 0° = W</span>) and nothing should slide
+        (<span class="mono">W sin 0° = 0</span>). Drag the slider to 0° above and watch it happen.
+      </p>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[4]</span></summary>
+        <p class="q">A block of weight 40 N rests on a frictionless slope inclined at 25° to the
+          horizontal. Find the components of its weight along and perpendicular to the slope, and state
+          the normal contact force.</p>
+        <div class="sol">
+          <p class="step">along the slope: 40 sin 25° = <span class="ans">16.9 N</span></p>
+          <p class="step">perpendicular: 40 cos 25° = <span class="ans">36.3 N</span></p>
+          <p class="step">the surface balances only the perpendicular part, so N = <span class="ans">36.3 N</span></p>
+          <p>The 16.9 N is unbalanced, so a frictionless block accelerates down the slope at
+            <span class="mono">g sin 25° = 4.1 m s⁻²</span>.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 10 ================= -->
+    <section class="lesson" id="l10">
+      <div class="lesson-head">
+        <span class="lnum">10</span>
+        <div>
+          <h2>Equilibrium: the closed triangle</h2>
+          <p class="syl">4.2.3 — use a vector triangle to represent coplanar forces in equilibrium</p>
+        </div>
+      </div>
+      <p class="lead">
+        If three coplanar forces hold an object in equilibrium, their resultant is zero — and a
+        resultant of zero means that when you draw them tip to tail, the last arrowhead lands exactly on
+        the first tail. The triangle closes. That is both the test and the method.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/10-equilibrium-triangle.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/10-equilibrium-triangle.mp4</code>.
+        </video>
+        <figcaption>
+          <span>The 3 N, 4 N and 5 N forces from film 04 — the third one balancing the other two — redrawn as a closed triangle.</span>
+          <span class="dur">0:20</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li>Equilibrium of a point object: <span class="mono">ΣF<sub>x</sub> = 0</span> and <span class="mono">ΣF<sub>y</sub> = 0</span>.</li>
+        <li>For an extended body you need the second condition too: no resultant torque (4.2.2).</li>
+        <li>The force that balances two others is equal in magnitude and opposite in direction to their resultant.</li>
+        <li>Draw the triangle in order, each tail on the previous tip; a triangle drawn out of order will not close.</li>
+      </ul>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[4]</span></summary>
+        <p class="q">A point is acted on by 3.0 N due east and 4.0 N due north. State the third force
+          that would hold it in equilibrium.</p>
+        <div class="sol">
+          <p class="step">resultant of the two = √(3.0² + 4.0²) = 5.0 N at tan⁻¹(4/3) = 53° north of east</p>
+          <p class="step">the balancing force is equal and opposite:</p>
+          <p class="step"><span class="ans">5.0 N at 53° south of west</span> (bearing 217°)</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 11 ================= -->
+    <section class="lesson" id="l11">
+      <div class="lesson-head">
+        <span class="lnum">11</span>
+        <div>
+          <h2>Crossing a river</h2>
+          <p class="syl">1.4 applied — perpendicular components are independent</p>
+        </div>
+      </div>
+      <p class="lead">
+        The single most useful consequence of resolving: two perpendicular components do not interfere
+        with each other. A current flowing downstream carries the boat downstream — and does absolutely
+        nothing to how long the crossing takes.
+      </p>
+
+      <figure class="film">
+        <video controls preload="metadata" playsinline>
+          <source src="videos/11-river-crossing.mp4" type="video/mp4">
+          Your browser cannot play this video. The file is <code>videos/11-river-crossing.mp4</code>.
+        </video>
+        <figcaption>
+          <span>A 3.0 m s⁻¹ boat in a 2.0 m s⁻¹ current, the resultant path it actually follows, and the 20 m of drift.</span>
+          <span class="dur">0:20</span>
+        </figcaption>
+      </figure>
+
+      <ul class="keys">
+        <li>Time to cross comes from the component <em>across</em> the river only: <span class="mono">t = width / v<sub>boat</sub></span>.</li>
+        <li>Drift comes from the current acting for that same time: <span class="mono">d = v<sub>current</sub> × t</span>.</li>
+        <li>The same independence is what makes projectile motion work: horizontal and vertical are solved separately.</li>
+      </ul>
+
+      <details class="worked">
+        <summary>Worked example <span class="marks">[5]</span></summary>
+        <p class="q">A boat is steered directly across a river 30 m wide at 3.0 m s⁻¹. The current flows
+          at 2.0 m s⁻¹. Find the resultant velocity, the time to cross and the distance travelled
+          downstream.</p>
+        <div class="sol">
+          <p class="step">v = √(3.0² + 2.0²) = <span class="ans">3.6 m s⁻¹</span> at tan⁻¹(2.0/3.0) = 34° to the bank-normal</p>
+          <p class="step">t = 30 / 3.0 = <span class="ans">10 s</span> — the current does not change this</p>
+          <p class="step">drift = 2.0 × 10 = <span class="ans">20 m downstream</span></p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= QUIZ ================= -->
+    <section class="quiz" id="quiz">
+      <h2 style="font-size:clamp(24px,4vw,34px);font-weight:700;">Check yourself</h2>
+      <p class="lead" style="margin-top:10px;">
+        Ten questions in the style of Paper 1 and Paper 2. Answer, then mark — each one explains itself.
+        Numerical answers are accepted within 2%, so round sensibly rather than exactly.
+      </p>
+      <form id="quiz-form"></form>
+      <div class="score">
+        <span class="n" id="score-n">— / 10</span>
+        <span class="lab" id="score-lab">Answer what you can, then mark the paper.</span>
+        <button type="button" class="primary" id="mark-btn">Mark my answers</button>
+        <button type="button" id="clear-btn">Clear</button>
+      </div>
+    </section>
+
+    <!-- ================= SUMMARY ================= -->
+    <section class="lesson" id="sheet">
+      <div class="lesson-head">
+        <span class="lnum">S</span>
+        <div>
+          <h2>Summary sheet</h2>
+          <p class="syl">everything above, on one page</p>
+        </div>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>The five relationships this topic is built on</caption>
+          <thead>
+            <tr><th>When you need</th><th>Use</th><th>Conditions</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Magnitude of a resultant</td><td class="f">R = √(F<sub>x</sub>² + F<sub>y</sub>²)</td><td>the two are perpendicular</td></tr>
+            <tr><td>Direction of a resultant</td><td class="f">θ = tan⁻¹(F<sub>y</sub> / F<sub>x</sub>)</td><td>measured from the F<sub>x</sub> direction</td></tr>
+            <tr><td>Magnitude, any angle</td><td class="f">R² = a² + b² − 2ab cos C</td><td>C is the triangle's interior angle</td></tr>
+            <tr><td>Direction, any angle</td><td class="f">sin α / b = sin C / R</td><td>sine rule, after the cosine rule</td></tr>
+            <tr><td>Components of a vector</td><td class="f">F cos θ along, F sin θ at 90°</td><td>θ measured from the “along” direction</td></tr>
+            <tr><td>Equilibrium of a point</td><td class="f">ΣF<sub>x</sub> = 0, ΣF<sub>y</sub> = 0</td><td>equivalently, a closed vector triangle</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Scalar or vector — the syllabus quantities</caption>
+          <thead><tr><th>Scalar</th><th>Vector</th></tr></thead>
+          <tbody>
+            <tr><td>distance</td><td>displacement</td></tr>
+            <tr><td>speed</td><td>velocity</td></tr>
+            <tr><td>mass</td><td>weight (and any force)</td></tr>
+            <tr><td>time, temperature</td><td>acceleration</td></tr>
+            <tr><td>energy, work, power</td><td>momentum, impulse</td></tr>
+            <tr><td>density, pressure</td><td>gravitational and electric field strength</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details class="worked">
+        <summary>For the teacher — running order and where to stop the film</summary>
+        <div class="sol">
+          <p class="step">Films 01–02 · the distinction and the drawing convention — 5 min with discussion</p>
+          <p class="step">Films 03–05 · addition, building to the cosine rule — pause 03 at the parallelogram and ask for the other order before playing on</p>
+          <p class="step">Films 06–07 · subtraction and Δv — the highest-value 6 minutes in the topic; most momentum errors start here</p>
+          <p class="step">Films 08–09 · resolving — set the sliders to 0° and 90° and ask for the components before revealing</p>
+          <p class="step">Films 10–11 · equilibrium and independence — 10 leans on 04, so show them in the same lesson</p>
+          <p>Each film is about 20 seconds and ends on a held summary frame, so it can be left on screen
+            while the class writes. The three interactive diagrams work offline; only the web fonts need
+            a connection.</p>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <p class="prov">
+        Syllabus references checked against the Cambridge International AS &amp; A Level Physics 9702
+        syllabus for examination in 2025, 2026 and 2027 — outcomes 1.4.1–1.4.3 (p.16) and 4.2.3 (p.18).
+        VERIFIED 2026-09-12. Check against the syllabus for your own examination series before relying
+        on the numbering.
+      </p>
+      <p class="prov">
+        Films rendered with Manim Community v0.21.0. Every figure in them is computed from its vector
+        components and checked against a hand-worked value at render time, so a wrong number stops the
+        render rather than reaching a student.
+      </p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var R2D = 180 / Math.PI;
+  function fmt(x, dp) { return x.toFixed(dp === undefined ? 1 : dp); }
+
+  /* ------------------------------------------------------------------
+     Contents rail: mark the section being read.
+  ------------------------------------------------------------------ */
+  var links = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = targets.indexOf(e.target);
+        if (i < 0) return;
+        links.forEach(function (a) { a.classList.remove('on'); });
+        links[i].classList.add('on');
+      });
+    }, { rootMargin: '-25% 0px -65% 0px' });
+    targets.forEach(function (t) { if (t) io.observe(t); });
+  }
+
+  /* ------------------------------------------------------------------
+     Tool 1 — tip-to-tail playground.
+     Grid: 1 square = 40 px = 1.0 N. Origin at (80, 260).
+  ------------------------------------------------------------------ */
+  var ORG = { x: 80, y: 260 }, STEP = 40;
+  var state = { a: { x: 4, y: 0 }, b: { x: 2, y: 3 } };
+
+  function toPx(v) { return { x: ORG.x + v.x * STEP, y: ORG.y - v.y * STEP }; }
+
+  var svgA = document.getElementById('add-svg');
+  if (svgA) {
+    // Grid, drawn once.
+    var g = document.getElementById('add-grid');
+    var NS = 'http://www.w3.org/2000/svg';
+    for (var gx = 0; gx <= 520; gx += STEP) {
+      var vl = document.createElementNS(NS, 'line');
+      vl.setAttribute('x1', gx); vl.setAttribute('y1', 0);
+      vl.setAttribute('x2', gx); vl.setAttribute('y2', 340);
+      vl.setAttribute('stroke', 'var(--rule)'); vl.setAttribute('stroke-width', '0.7');
+      vl.setAttribute('opacity', gx === ORG.x ? '1' : '0.5');
+      g.appendChild(vl);
+    }
+    for (var gy = 340; gy >= 0; gy -= STEP) {
+      var hl = document.createElementNS(NS, 'line');
+      hl.setAttribute('x1', 0); hl.setAttribute('y1', gy);
+      hl.setAttribute('x2', 520); hl.setAttribute('y2', gy);
+      hl.setAttribute('stroke', 'var(--rule)'); hl.setAttribute('stroke-width', '0.7');
+      hl.setAttribute('opacity', gy === ORG.y ? '1' : '0.5');
+      g.appendChild(hl);
+    }
+
+    var elA = document.getElementById('add-a'), elB = document.getElementById('add-b'),
+        elB2 = document.getElementById('add-b2'), elR = document.getElementById('add-r'),
+        elP = document.getElementById('add-para'),
+        hA = document.getElementById('add-ha'), hB = document.getElementById('add-hb'),
+        lA = document.getElementById('add-la'), lB = document.getElementById('add-lb'),
+        lR = document.getElementById('add-lr');
+
+    function setLine(el, p, q) {
+      el.setAttribute('x1', p.x); el.setAttribute('y1', p.y);
+      el.setAttribute('x2', q.x); el.setAttribute('y2', q.y);
+    }
+
+    function drawAdd() {
+      var o = toPx({ x: 0, y: 0 });
+      var pa = toPx(state.a);
+      var pb = toPx(state.b);
+      var r = { x: state.a.x + state.b.x, y: state.a.y + state.b.y };
+      var pr = toPx(r);
+
+      setLine(elA, o, pa);
+      setLine(elB, o, pb);          // faint, where b started
+      setLine(elB2, pa, pr);        // b slid to the tip of a
+      setLine(elR, o, pr);
+      elP.setAttribute('points', [o, pa, pr, pb].map(function (p) { return p.x + ',' + p.y; }).join(' '));
+
+      hA.setAttribute('cx', pa.x); hA.setAttribute('cy', pa.y);
+      hB.setAttribute('cx', pb.x); hB.setAttribute('cy', pb.y);
+      lA.setAttribute('x', (o.x + pa.x) / 2 - 4); lA.setAttribute('y', (o.y + pa.y) / 2 + 20);
+      lB.setAttribute('x', (pa.x + pr.x) / 2 + 10); lB.setAttribute('y', (pa.y + pr.y) / 2);
+      lR.setAttribute('x', (o.x + pr.x) / 2 - 30); lR.setAttribute('y', (o.y + pr.y) / 2 - 12);
+
+      var mag = Math.hypot(r.x, r.y);
+      var th = mag === 0 ? 0 : Math.atan2(r.y, r.x) * R2D;
+      document.getElementById('out-a').textContent = '(' + fmt(state.a.x) + ', ' + fmt(state.a.y) + ')';
+      document.getElementById('out-b').textContent = '(' + fmt(state.b.x) + ', ' + fmt(state.b.y) + ')';
+      document.getElementById('out-r').textContent = fmt(mag) + ' N';
+      document.getElementById('out-th').textContent = fmt(th) + '°';
+    }
+
+    function clientToGrid(evt) {
+      var ctm = svgA.getScreenCTM();
+      if (!ctm) return null;
+      var pt = svgA.createSVGPoint();
+      pt.x = evt.clientX; pt.y = evt.clientY;
+      var loc = pt.matrixTransform(ctm.inverse());
+      var gxv = Math.round((loc.x - ORG.x) / STEP * 2) / 2;   // half-square snap
+      var gyv = Math.round((ORG.y - loc.y) / STEP * 2) / 2;
+      return {
+        x: Math.max(-1.5, Math.min(9.5, gxv)),
+        y: Math.max(-1.5, Math.min(1.9, gyv))
+      };
+    }
+
+    function grab(handle, key) {
+      handle.addEventListener('pointerdown', function (e) {
+        handle.setPointerCapture(e.pointerId);
+        handle.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+      handle.addEventListener('pointermove', function (e) {
+        if (!handle.hasPointerCapture || !handle.hasPointerCapture(e.pointerId)) return;
+        var p = clientToGrid(e);
+        if (p) { state[key] = p; drawAdd(); }
+      });
+      handle.addEventListener('pointerup', function (e) {
+        if (handle.releasePointerCapture) handle.releasePointerCapture(e.pointerId);
+        handle.style.cursor = 'grab';
+      });
+      handle.addEventListener('keydown', function (e) {
+        var d = { ArrowLeft: [-0.5, 0], ArrowRight: [0.5, 0], ArrowUp: [0, 0.5], ArrowDown: [0, -0.5] }[e.key];
+        if (!d) return;
+        e.preventDefault();
+        state[key] = {
+          x: Math.max(-1.5, Math.min(9.5, state[key].x + d[0])),
+          y: Math.max(-1.5, Math.min(1.9, state[key].y + d[1]))
+        };
+        drawAdd();
+      });
+    }
+    grab(hA, 'a'); grab(hB, 'b');
+
+    document.getElementById('add-reset').addEventListener('click', function () {
+      state = { a: { x: 4, y: 0 }, b: { x: 2, y: 3 } }; drawAdd();
+    });
+    document.getElementById('add-perp').addEventListener('click', function () {
+      state = { a: { x: 3, y: 0 }, b: { x: 0, y: 4 } }; drawAdd();
+    });
+    drawAdd();
+  }
+
+  /* ------------------------------------------------------------------
+     Tool 2 — resolving a force.
+  ------------------------------------------------------------------ */
+  var resF = document.getElementById('res-F');
+  if (resF) {
+    var resT = document.getElementById('res-T');
+    var O2 = { x: 90, y: 235 }, PXN = 2.6;   // px per newton
+
+    function drawRes() {
+      var F = +resF.value, th = +resT.value, r = th / R2D;
+      var fx = F * Math.cos(r), fy = F * Math.sin(r);
+      var tip = { x: O2.x + fx * PXN, y: O2.y - fy * PXN };
+      var foot = { x: O2.x + fx * PXN, y: O2.y };
+
+      function L(id, p, q) {
+        var el = document.getElementById(id);
+        el.setAttribute('x1', p.x); el.setAttribute('y1', p.y);
+        el.setAttribute('x2', q.x); el.setAttribute('y2', q.y);
+      }
+      L('res-base', { x: O2.x - 20, y: O2.y }, { x: 500, y: O2.y });
+      L('res-f', O2, tip);
+      L('res-x', O2, foot);
+      L('res-y', foot, tip);
+      L('res-gx', foot, tip);
+
+      var ar = 46;
+      var arc = document.getElementById('res-arc');
+      arc.setAttribute('d', 'M ' + (O2.x + ar) + ' ' + O2.y +
+        ' A ' + ar + ' ' + ar + ' 0 0 0 ' +
+        (O2.x + ar * Math.cos(r)) + ' ' + (O2.y - ar * Math.sin(r)));
+      var angT = document.getElementById('res-ang');
+      angT.setAttribute('x', O2.x + (ar + 12) * Math.cos(r / 2));
+      angT.setAttribute('y', O2.y - (ar + 12) * Math.sin(r / 2) + 4);
+      angT.textContent = th + '°';
+
+      var lf = document.getElementById('res-lf');
+      lf.setAttribute('x', tip.x + 8); lf.setAttribute('y', tip.y - 6);
+      lf.textContent = F + ' N';
+      var lx = document.getElementById('res-lx');
+      lx.setAttribute('x', (O2.x + foot.x) / 2 - 20); lx.setAttribute('y', O2.y + 20);
+      lx.textContent = fmt(fx) + ' N';
+      var ly = document.getElementById('res-ly');
+      ly.setAttribute('x', foot.x + 9); ly.setAttribute('y', (O2.y + tip.y) / 2 + 4);
+      ly.textContent = fmt(fy) + ' N';
+
+      document.getElementById('res-Fo').textContent = F + ' N';
+      document.getElementById('res-To').textContent = th + '°';
+      document.getElementById('res-ox').textContent = fmt(fx) + ' N';
+      document.getElementById('res-oy').textContent = fmt(fy) + ' N';
+      document.getElementById('res-ock').textContent = fmt(Math.hypot(fx, fy)) + ' N';
+    }
+    resF.addEventListener('input', drawRes);
+    resT.addEventListener('input', drawRes);
+    drawRes();
+  }
+
+  /* ------------------------------------------------------------------
+     Tool 3 — weight on a slope.
+  ------------------------------------------------------------------ */
+  var slpT = document.getElementById('slp-T');
+  if (slpT) {
+    var slpW = document.getElementById('slp-W');
+    var A3 = { x: 40, y: 250 }, SPAN = 400, PXN3 = 1.9;
+
+    function drawSlp() {
+      var th = +slpT.value, W = +slpW.value, r = th / R2D;
+      var C = { x: A3.x + SPAN, y: A3.y - SPAN * Math.tan(r) };
+      var B = { x: A3.x + SPAN, y: A3.y };
+      document.getElementById('slp-wedge').setAttribute('points',
+        A3.x + ',' + A3.y + ' ' + B.x + ',' + B.y + ' ' + C.x + ',' + C.y);
+
+      // Block sits on the surface, 55% of the way up from the foot.
+      var alongU = { x: Math.cos(r), y: -Math.sin(r) };
+      var normU = { x: Math.sin(r), y: Math.cos(r) };   // outward from the surface (screen y down)
+      var surf = { x: A3.x + SPAN * 0.55 * Math.cos(r) * 1, y: A3.y - SPAN * 0.55 * Math.sin(r) };
+      var c = { x: surf.x - normU.x * 14, y: surf.y - normU.y * 14 };
+
+      var blk = document.getElementById('slp-block');
+      blk.setAttribute('x', c.x - 17); blk.setAttribute('y', c.y - 11);
+      blk.setAttribute('transform', 'rotate(' + (-th) + ' ' + c.x + ' ' + c.y + ')');
+
+      function L(id, p, q) {
+        var el = document.getElementById(id);
+        el.setAttribute('x1', p.x); el.setAttribute('y1', p.y);
+        el.setAttribute('x2', q.x); el.setAttribute('y2', q.y);
+      }
+      var wPar = W * Math.sin(r), wPerp = W * Math.cos(r);
+      L('slp-w', c, { x: c.x, y: c.y + W * PXN3 });
+      L('slp-par', c, { x: c.x - alongU.x * wPar * PXN3, y: c.y - alongU.y * wPar * PXN3 });
+      L('slp-perp', c, { x: c.x + normU.x * wPerp * PXN3 * -1, y: c.y + normU.y * wPerp * PXN3 * -1 });
+
+      var lw = document.getElementById('slp-lw');
+      lw.setAttribute('x', c.x + 7); lw.setAttribute('y', c.y + W * PXN3 + 14);
+      lw.textContent = 'W = ' + W + ' N';
+
+      var ar = 60;
+      document.getElementById('slp-arc').setAttribute('d',
+        'M ' + (A3.x + ar) + ' ' + A3.y + ' A ' + ar + ' ' + ar + ' 0 0 0 ' +
+        (A3.x + ar * Math.cos(r)) + ' ' + (A3.y - ar * Math.sin(r)));
+      var at = document.getElementById('slp-ang');
+      at.setAttribute('x', A3.x + (ar + 14) * Math.cos(r / 2));
+      at.setAttribute('y', A3.y - (ar + 14) * Math.sin(r / 2) + 4);
+      at.textContent = th + '°';
+
+      document.getElementById('slp-To').textContent = th + '°';
+      document.getElementById('slp-Wo').textContent = W + ' N';
+      document.getElementById('slp-opar').textContent = fmt(wPar) + ' N';
+      document.getElementById('slp-operp').textContent = fmt(wPerp) + ' N';
+    }
+    slpT.addEventListener('input', drawSlp);
+    slpW.addEventListener('input', drawSlp);
+    drawSlp();
+  }
+
+  /* ------------------------------------------------------------------
+     Quiz.
+  ------------------------------------------------------------------ */
+  var QS = [
+    { t: 'mcq', q: 'Which of these quantities is a vector?',
+      o: ['work done', 'speed', 'momentum', 'temperature'], a: 2,
+      why: 'Momentum is mass × velocity. Multiplying a vector by a scalar leaves a vector.' },
+
+    { t: 'mcq', q: 'Two forces of 6.0 N and 8.0 N act at a point, at right angles to each other. The magnitude of their resultant is:',
+      o: ['2.0 N', '10.0 N', '14.0 N', '48 N'], a: 1,
+      why: '√(6.0² + 8.0²) = √100 = 10.0 N. The 3–4–5 triangle, doubled.' },
+
+    { t: 'mcq', q: 'Two forces of 6.0 N and 8.0 N act at a point at an angle you are not told. Which resultant is impossible?',
+      o: ['2.0 N', '9.0 N', '14.0 N', '15.0 N'], a: 3,
+      why: 'The resultant can only lie between |8.0 − 6.0| = 2.0 N (opposite) and 8.0 + 6.0 = 14.0 N (same direction). 15.0 N is outside that range.' },
+
+    { t: 'num', q: 'A force of 20 N acts at 60° to the horizontal. Find its horizontal component.',
+      a: 10.0, unit: 'N',
+      why: '20 cos 60° = 10.0 N. Cosine goes with the direction the angle is measured from — here, the horizontal.' },
+
+    { t: 'num', q: 'For the same 20 N force at 60° to the horizontal, find its vertical component.',
+      a: 17.3, unit: 'N',
+      why: '20 sin 60° = 17.3 N. Check: √(10.0² + 17.3²) = 20 N.' },
+
+    { t: 'num', q: 'A ball of mass 0.15 kg strikes a wall at 4.0 m s⁻¹ and rebounds along the same line at 4.0 m s⁻¹. Find the magnitude of its change in momentum.',
+      a: 1.2, unit: 'kg m s⁻¹',
+      why: 'Δv = (−4.0) − (+4.0) = −8.0 m s⁻¹, so |Δp| = 0.15 × 8.0 = 1.2 kg m s⁻¹. It is 2mv, not zero and not mv.' },
+
+    { t: 'mcq', q: 'A block of weight 50 N rests on a slope at 30° to the horizontal. The component of its weight along the slope is:',
+      o: ['25 N', '29 N', '43 N', '50 N'], a: 0,
+      why: '50 sin 30° = 25 N. Along the slope takes the sine; into the slope takes the cosine (43 N here).' },
+
+    { t: 'num', q: 'A walker travels 40 m due east then 30 m due north. Find the magnitude of the resultant displacement.',
+      a: 50.0, unit: 'm',
+      why: '√(40² + 30²) = 50 m. The distance walked is 70 m — a different quantity.' },
+
+    { t: 'mcq', q: 'Three coplanar forces hold an object in equilibrium. Drawn tip to tail, the three arrows must:',
+      o: ['all be equal in magnitude', 'form a closed triangle', 'be parallel to each other', 'each be zero'], a: 1,
+      why: 'Equilibrium means zero resultant, and a zero resultant means the last arrowhead lands on the first tail — a closed triangle.' },
+
+    { t: 'num', q: 'A boat is steered straight across a river 40 m wide at 4.0 m s⁻¹, against a current of 3.0 m s⁻¹. How long does the crossing take?',
+      a: 10.0, unit: 's',
+      why: '40 / 4.0 = 10 s. The current is perpendicular to the crossing, so it changes where the boat lands (30 m downstream) but not when it arrives.' }
+  ];
+
+  var form = document.getElementById('quiz-form');
+  if (form) {
+    QS.forEach(function (Q, i) {
+      var d = document.createElement('div');
+      d.className = 'q-item';
+      var stem = '<p class="stem"><span class="qn">Q' + (i + 1) + '</span>' + Q.q + '</p>';
+      var body;
+      if (Q.t === 'mcq') {
+        body = '<div class="opts">' + Q.o.map(function (opt, j) {
+          return '<label for="q' + i + 'o' + j + '"><input type="radio" id="q' + i + 'o' + j +
+                 '" name="q' + i + '" value="' + j + '"><span>' + opt + '</span></label>';
+        }).join('') + '</div>';
+      } else {
+        body = '<div class="numeric"><input type="text" inputmode="decimal" id="q' + i +
+               '" name="q' + i + '" autocomplete="off" placeholder="answer">' +
+               '<span class="unit">' + Q.unit + '</span></div>';
+      }
+      d.innerHTML = stem + body + '<div class="verdict" id="v' + i + '"></div>';
+      form.appendChild(d);
+    });
+
+    document.getElementById('mark-btn').addEventListener('click', function () {
+      var score = 0, answered = 0;
+      QS.forEach(function (Q, i) {
+        var v = document.getElementById('v' + i);
+        var right = false, given = null;
+        if (Q.t === 'mcq') {
+          var sel = form.querySelector('input[name="q' + i + '"]:checked');
+          if (sel) { answered++; given = +sel.value; right = given === Q.a; }
+        } else {
+          var box = document.getElementById('q' + i);
+          var val = parseFloat(String(box.value).replace(/[^0-9.eE+-]/g, ''));
+          if (!isNaN(val)) { answered++; right = Math.abs(val - Q.a) <= Math.abs(Q.a) * 0.02; }
+        }
+        if (right) score++;
+        v.className = 'verdict show ' + (right ? 'right' : 'wrong');
+        var head = right ? '<span class="tag">Correct</span> ' : '<span class="tag">Not yet</span> ';
+        var ans = Q.t === 'mcq' ? Q.o[Q.a] : (Q.a + ' ' + Q.unit);
+        v.innerHTML = head + '<span class="why">' + (right ? '' : '<b>' + ans + '</b>. ') + Q.why + '</span>';
+      });
+      document.getElementById('score-n').textContent = score + ' / ' + QS.length;
+      var lab = document.getElementById('score-lab');
+      if (answered === 0) lab.textContent = 'Nothing answered yet — every question is now showing its explanation.';
+      else if (score === QS.length) lab.textContent = 'All ten. You are ready for the exam questions on this topic.';
+      else if (score >= 7) lab.textContent = 'Solid. Re-watch the films behind the ones you missed.';
+      else lab.textContent = 'Work back through films 03 to 09, then try again.';
+    });
+
+    document.getElementById('clear-btn').addEventListener('click', function () {
+      form.reset();
+      QS.forEach(function (_, i) {
+        var v = document.getElementById('v' + i);
+        v.className = 'verdict'; v.innerHTML = '';
+      });
+      document.getElementById('score-n').textContent = '— / 10';
+      document.getElementById('score-lab').textContent = 'Answer what you can, then mark the paper.';
+    });
+  }
+})();
+</script>
+</body>
+</html>
